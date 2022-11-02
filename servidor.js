@@ -62,14 +62,16 @@ servidor.get("/", logging, function (req, res) {
     //Title
     html += '<title>XTRA FOOD</title>\n';
     html += '<link rel="stylesheet" href="css/fonts.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/general_styles.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/navbar_css.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/home_css.css" type="text/css">\n';
     //html += '\n<script src="home.js"></script>';
     //HTML close head
     html += '</head>\n<body>';
 
     //HTML NavBar
     html += navbar
-    html += '<div id="navbar_ghost_scpace"></div>'
+    //html += '<div id="navbar_ghost_scpace"></div>'
 
     //HTML Content
     html += home_content;

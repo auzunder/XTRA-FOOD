@@ -1,0 +1,49 @@
+.flex {
+    display: flex;
+}
+
+.flex_row {
+    flex-direction: row;
+}
+
+.flex_collum {
+    flex-direction: column;
+}
+
+.flex_center {
+    align-items: center;
+}
+
+.space_bettwen {
+    
+}
+
+.button2_yellow{
+    margin: 50px 50px 100px 50px;
+    border: 1px solid #FAD657;
+    border-radius: 2px;
+    text-align: center;
+    align-items: center;
+}
+
+.button2_text_yellow{
+    padding: 25px 50px;
+    color: #FAD657;
+    font-family: "Gotham Bold";
+    font-size: 32px;
+}
+
+.button2_red {
+    margin: 50px 50px 100px 50px;
+    border: 1px solid #AF1917;
+    border-radius: 2px;
+    text-align: center;
+    align-items: center;
+}
+
+.button2_text_red {
+    padding: 25px 50px;
+    color: #AF1917;
+    font-family: "Gotham Bold";
+    font-size: 32px;
+}

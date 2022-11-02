@@ -5,7 +5,7 @@
 }
 
 html{
-    background-image: -webkit-linear-gradient(left, red, yellow);
+    /**background-image: -webkit-linear-gradient(left, red, yellow);/**/
 }
 
 header{
@@ -56,16 +56,3 @@ header{
     height: 30%;
     max-height: 30px;
 }
-
-.flex{
-    display: flex;
-}
-
-.flex_row{
-    flex-direction: row;
-}
-
-.flex_center{
-    align-items: center;
-}
-

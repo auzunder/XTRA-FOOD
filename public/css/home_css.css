@@ -1,0 +1,35 @@
+.landingPageImage{
+    width: 100%;
+}
+
+#CTAs_wrapper{
+    position: relative;
+    top: -200px;
+    padding: 0 150px;
+}
+
+#CTA1_box{
+    background: rgba(175, 25, 23, 0.75);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    border-radius: 10px;
+    max-width: 45%;
+    gap: 25px;
+}
+
+#CTA1_title{
+    padding: 150px;
+    font-size: 36px;
+    font-family: "Gotham Bold";
+    color: white;
+}
+
+#CTA1_introduction{
+    font-family: "Gotham Bold";
+    color: #F9C920;
+    padding: 0 100px;
+    font-size: 36px;
+    max-width: 100%;
+    text-align: center;
+}
