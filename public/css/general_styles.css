@@ -1,3 +1,8 @@
+body{
+    background-image: url(../images/padroes/website_background.jpg);
+    background-repeat: repeat-y;
+}
+
 .flex {
     display: flex;
 }
@@ -14,8 +19,8 @@
     align-items: center;
 }
 
-.space_bettwen {
-    
+.space_between {
+    justify-content: space-between;
 }
 
 .button2_yellow{
@@ -46,4 +51,78 @@
     color: #AF1917;
     font-family: "Gotham Bold";
     font-size: 32px;
+}
+
+.button3_red {
+    border: 1px solid #AF1917;
+    border-radius: 2px;
+    text-align: center;
+    align-items: center;
+}
+
+.button3_text_red {
+    font-size: 24px;
+    padding: 25px 150px;
+    color: #AF1917;
+    font-family: "Gotham Bold";
+}
+
+.title{
+    font-family: "Gotham Bold";
+    font-size: 64px;
+}
+
+.text{
+    font-size: 24px;
+    padding: 0 360px;
+    text-align: center;
+    line-height: 35px;
+}
+
+.info_block{
+    gap: 50px;
+}
+
+.content_wrapper{
+    gap: 250px;
+}
+
+
+/* CAROUSEL */
+.carousel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.cards{
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    width: 80vw;
+}
+
+.card{
+
+}
+
+.card img{
+    width: 20vw;
+}
+
+.page_selection{
+    display: flex;
+    gap: 10px;
+}
+
+.selection_circles{
+    width: 20px;
+    height: 20px;
+    background-color: #D9D9D9;
+    border-radius: 100%;
+}
+
+.selected_circle{
+    background-color: #AF1917;
 }

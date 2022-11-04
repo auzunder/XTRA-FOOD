@@ -1,0 +1,45 @@
+footer{
+    background-color: #FAD657;
+    margin-top: 150px;
+    height: 250px;
+}
+
+.newsletter_text1{
+    font-family: "Gotham bold";
+    font-size: 36px;
+}
+
+.newsletter_text2{
+    font-size: 20px;
+}
+
+.newsletter_form{
+    gap: 0;
+    flex-grow: 1;
+}
+
+.submeter_button{
+    background-color: #AF1917;
+    padding: 15px 50px;
+    text-align: center;
+    color: white;
+    font-size: 24px;
+}
+
+.text_input{
+    border: none;
+    padding: 15px;
+    border-bottom: 1px solid #AF1917;
+    background: none;
+    font-size: 24px;
+}
+
+.logo_footer{
+    height: 150px;
+    padding: 50px 0;
+}
+
+.contacts_social{
+    font-size: 20px;
+    gap: 20px;
+}

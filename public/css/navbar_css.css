@@ -9,6 +9,7 @@ html{
 }
 
 header{
+    z-index: 9999;
     position: fixed;
     height: 12vh;
     max-height: 100px;

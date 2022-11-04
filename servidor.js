@@ -33,6 +33,7 @@ const logging = (req, res, next) => {
 // Tentar abrir ficheiro
     try {
         var navbar = fs.readFileSync('html/NavBar.html', 'utf-8');
+        var footer = fs.readFileSync('html/Footer.html', 'utf-8');
     }
     // Caso nao consiga da log do erro
     catch (error){
@@ -64,17 +65,20 @@ servidor.get("/", logging, function (req, res) {
     html += '<link rel="stylesheet" href="css/fonts.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/general_styles.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/navbar_css.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/footer_css.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/home_css.css" type="text/css">\n';
     //html += '\n<script src="home.js"></script>';
     //HTML close head
     html += '</head>\n<body>';
 
     //HTML NavBar
-    html += navbar
+    html += navbar;
     //html += '<div id="navbar_ghost_scpace"></div>'
 
     //HTML Content
     html += home_content;
+
+    html += footer;
 
     //HTML close
     html += '\n</body>\n</html>';
