@@ -23,12 +23,44 @@ body{
     justify-content: space-between;
 }
 
+svg {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+rect {
+    fill: none;
+    stroke: #FAD657;
+    stroke-width: 2;
+    stroke-dasharray: 422, 0;
+    transition: all 0.35s linear;
+}
+
+.button{
+    position: relative;
+}
+
 .button2_yellow{
     margin: 50px 50px 100px 50px;
-    border: 1px solid #FAD657;
     border-radius: 2px;
     text-align: center;
     align-items: center;
+    transition: all 0.35s linear;
+}
+
+.button2_yellow:hover{
+    background-color: #FAD657;
+    cursor: pointer;
+    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.button2_yellow:hover rect{
+    stroke-width: 10;
+    stroke-dasharray: 0, 310;
+    stroke-dashoffset: 48;
 }
 
 .button2_text_yellow{
@@ -36,6 +68,14 @@ body{
     color: #FAD657;
     font-family: "Gotham Bold";
     font-size: 32px;
+    transition: all 0.35s linear;
+}
+
+.button2_text_yellow:hover {
+    padding: 22px 30px;
+    color: #AF1917;
+    font-size: 38px;
+    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .button2_red {
