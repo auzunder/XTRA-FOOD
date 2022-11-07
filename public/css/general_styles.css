@@ -3,6 +3,11 @@ body{
     background-repeat: repeat-y;
 }
 
+a{
+    color: black;
+    text-decoration: none;
+}
+
 .flex {
     display: flex;
 }
@@ -23,6 +28,36 @@ body{
     justify-content: space-between;
 }
 
+.login_input{
+    background-color: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.login_registo_form{
+    gap: 25px;
+    margin: 0 0 50px 0;
+}
+
+#registo_popUp, #login_popUp{
+    display: none;
+}
+
+.slogan{
+    position: absolute;
+    top: 36%;
+    text-align: left;
+    padding: 0 150px;
+}
+
+.slogan div{
+    font-size: 60px;
+    font-family: 'Gotham Bold';
+    color: #AF1917;
+
+}
+
+/* BUTTONS */
 svg {
     height: 100%;
     width: 100%;
@@ -33,15 +68,42 @@ svg {
 
 rect {
     fill: none;
-    stroke: #FAD657;
     stroke-width: 2;
     stroke-dasharray: 422, 0;
     transition: all 0.35s linear;
 }
 
-.button{
+.button1_red{
+    border: none;
+    background-color: #AF1917;
+    border-radius: 2px;
+    text-align: center;
+    align-items: center;
+}
+
+.button1_red:hover{
+    cursor: pointer;
+}
+
+.button1_text_red {
+    padding: 25px 50px;
+    color: white;
+    font-family: "Gotham Bold";
+    font-size: 32px;
+    transition: all 0.35s linear;
+}
+
+.button1_text_red:hover {
+    padding: 22px 36px;
+    color: white;
+    font-size: 38px;
+    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.buttonCTA{
     position: relative;
 }
+
 
 .button2_yellow{
     margin: 50px 50px 100px 50px;
@@ -51,13 +113,17 @@ rect {
     transition: all 0.35s linear;
 }
 
+.button2_yellow rect{
+    stroke: #FAD657;
+}
+
 .button2_yellow:hover{
     background-color: #FAD657;
     cursor: pointer;
     transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.button2_yellow:hover rect{
+.buttonCTA:hover rect{
     stroke-width: 10;
     stroke-dasharray: 0, 310;
     stroke-dashoffset: 48;
@@ -86,11 +152,29 @@ rect {
     align-items: center;
 }
 
+.button2_red:hover {
+    background-color: #AF1917;
+    cursor: pointer;
+    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.button2_red rect{
+    stroke: #AF1917;
+}
+
 .button2_text_red {
     padding: 25px 50px;
     color: #AF1917;
     font-family: "Gotham Bold";
     font-size: 32px;
+    transition: all 0.35s linear;
+}
+
+.button2_text_red:hover {
+    padding: 22px 30px;
+    color: #FAD657;
+    font-size: 38px;
+    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .button3_red {
@@ -106,6 +190,8 @@ rect {
     color: #AF1917;
     font-family: "Gotham Bold";
 }
+
+/* PAGE CONTENT */
 
 .title{
     font-family: "Gotham Bold";

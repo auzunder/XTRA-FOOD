@@ -9,7 +9,7 @@ html{
 }
 
 header{
-    z-index: 9999;
+    z-index: 99;
     position: fixed;
     height: 12vh;
     max-height: 100px;
@@ -56,4 +56,26 @@ header{
 .navBarIcons{
     height: 30%;
     max-height: 30px;
+}
+
+.login_background{
+    z-index: 999;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12.5px);
+    -webkit-backdrop-filter: blur(12.5px);
+    justify-content: center;
+}
+
+.login_popup{
+    border: 2px solid #AF1917;
+    background-image: url(../images/padroes/website_background.jpg);
+    width: 25vw;
+}
+
+.login_popup img{
+    width: 50%;
+    margin: 50px;
 }
