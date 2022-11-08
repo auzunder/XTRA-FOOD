@@ -68,7 +68,7 @@ servidor.get("/", logging, function (req, res) {
     html += '<link rel="stylesheet" href="css/footer_css.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/general_styles.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/home_css.css" type="text/css">\n';
-    //html += '\n<script src="home.js"></script>';
+    html += '<script src="js/login.js"></script>\n';
     //HTML close head
     html += '</head>\n<body>';
 
