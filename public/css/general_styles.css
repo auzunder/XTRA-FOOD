@@ -47,20 +47,6 @@ a{
     display: none;
 }
 
-.slogan{
-    position: absolute;
-    top: 36%;
-    text-align: left;
-    padding: 0 150px;
-}
-
-.slogan div{
-    font-size: 60px;
-    font-family: 'Gotham Bold';
-    color: #AF1917;
-
-}
-
 /* BUTTONS */
 svg {
     height: 100%;
