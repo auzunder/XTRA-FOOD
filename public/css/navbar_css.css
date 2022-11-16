@@ -47,6 +47,10 @@ header{
     gap: 10px;
 }
 
+.navBarMenuOption:hover{
+    text-shadow: white;
+}
+
 .navBarText{
     font-size: 24px;
     width: max-content;
