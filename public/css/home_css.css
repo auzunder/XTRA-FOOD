@@ -84,3 +84,27 @@
     gap: 5vw;
     align-items: center;
 }
+
+.item_loja_card{
+    width: 18.229vw;
+    border-radius: 5px;
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.25));
+}
+
+.item_loja_img{
+    width: 100%;
+    border-radius: 5px 5px 0 0 ;
+    height: 18.229vw;
+    background-color: #878787;
+}
+
+.item_loja{
+    width: 100%;
+    padding: 20px;
+}
+
+h1{
+    font-size: ;
+    font-weight: ;
+    font-family: "Montserrat";
+}
