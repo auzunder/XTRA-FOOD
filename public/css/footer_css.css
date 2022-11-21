@@ -6,7 +6,7 @@ footer{
 }
 
 .newsletter_text1{
-    font-family: "Gotham bold";
+    font-family: "Montserrat";
     font-size: 36px;
 }
 
@@ -44,7 +44,7 @@ footer{
 
 .contacts_social{
     font-size: 20px;
-    gap: 20px;
+    gap: 30px;
     align-items: flex-end;
 }
 

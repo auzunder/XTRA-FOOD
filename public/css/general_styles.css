@@ -1,3 +1,13 @@
+* {
+    margin: 0;
+    font-family: "Montserrat";
+    /**border: black solid 1px;/**/
+}
+
+html {
+    /**background-image: -webkit-linear-gradient(left, red, yellow);/**/
+}
+
 body{
     background-image: url(../images/padroes/website_background.jpg);
     background-repeat: repeat-y;
@@ -78,7 +88,7 @@ rect {
 .button1_text_red {
     padding: 25px 50px;
     color: white;
-    font-family: "Gotham Bold";
+    font-family: "Montserrat";
     font-size: 32px;
     transition: all 0.35s linear;
 }
@@ -96,7 +106,7 @@ rect {
 
 
 .button2_yellow{
-    margin: 50px 50px 100px 50px;
+    margin: 50px 100px 100px 100px;
     border-radius: 2px;
     text-align: center;
     align-items: center;
@@ -122,20 +132,20 @@ rect {
 .button2_text_yellow{
     padding: 25px 50px;
     color: #FAD657;
-    font-family: "Gotham Bold";
-    font-size: 32px;
+    font-family: "Montserrat";
+    font-size: 24px;
     transition: all 0.35s linear;
 }
 
 .button2_text_yellow:hover {
-    padding: 22px 30px;
+    padding: 20px 24px;
     color: #AF1917;
-    font-size: 38px;
+    font-size: 32px;
     transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .button2_red {
-    margin: 50px 50px 100px 50px;
+    margin: 50px 100px 100px 100px;
     border: 1px solid #AF1917;
     border-radius: 2px;
     text-align: center;
@@ -155,20 +165,21 @@ rect {
 .button2_text_red {
     padding: 25px 50px;
     color: #AF1917;
-    font-family: "Gotham Bold";
-    font-size: 32px;
+    font-family: "Montserrat";
+    font-size: 24px;
     transition: all 0.35s linear;
 }
 
 .button2_text_red:hover {
-    padding: 22px 30px;
+    padding: 20px 24px;
     color: #FAD657;
-    font-size: 38px;
+    font-size: 32px;
     transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .button3_red {
     border: 1px solid #AF1917;
+    background-color: white;
     border-radius: 2px;
     text-align: center;
     align-items: center;
@@ -178,20 +189,27 @@ rect {
     font-size: 24px;
     padding: 25px 150px;
     color: #AF1917;
-    font-family: "Gotham Bold";
+    font-family: "Montserrat";
 }
 
 /* PAGE CONTENT */
 
 .title{
-    font-family: "Gotham Bold";
+    font-family: "Montserrat";
     font-size: 64px;
+    font-weight: 900;
 }
 
 .text{
     font-size: 24px;
-    padding: 0 360px;
+    padding: 0 20vw;
     text-align: center;
+    line-height: 35px;
+}
+
+.text_2{
+    font-size: 24px;
+    text-align: left;
     line-height: 35px;
 }
 

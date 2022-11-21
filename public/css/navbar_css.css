@@ -1,13 +1,3 @@
-*{
-    margin: 0;
-    font-family: "Gotham Book";
-    /**border: black solid 1px;/**/
-}
-
-html{
-    /**background-image: -webkit-linear-gradient(left, red, yellow);/**/
-}
-
 header{
     z-index: 99;
     position: fixed;

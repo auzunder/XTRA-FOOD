@@ -9,7 +9,9 @@
 }
 
 .CTA_box{
+    padding: 100px 0 0 0;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background: rgba(175, 25, 23, 0.75);
     backdrop-filter: blur(50px);
     -webkit-backdrop-filter: blur(50px);
     border-radius: 10px;
@@ -18,21 +20,21 @@
 }
 
 .CTA_title{
-    padding: 150px;
     font-size: 36px;
-    font-family: "Gotham Bold";
+    font-family: "Montserrat";
+    font-weight: 800;
     color: white;
 }
 
 .CTA_introduction{
-    font-family: "Gotham Bold";
+    font-family: "Montserrat";
     color: #F9C920;
-    padding: 0 100px;
     font-size: 24px;
     max-width: 100%;
     text-align: center;
 }
 
+/**
 #CTA1_box{
     background: rgba(175, 25, 23, 0.75);
 }
@@ -47,4 +49,38 @@
 
 #CTA2_introduction {
     color: #AF1917;
+}
+/**/
+
+.missão_video{
+    width: 57.2917vw;
+    height: calc(0.5625*57.2917vw);
+    background: #D9D9D9;
+    border-radius: 5px;
+}
+
+.event_card{
+    width: 15vw;
+    height: calc(1.57*15vw);
+    border-radius: 5px;
+    background-color: #878787;
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.25));
+}
+
+.eventos{
+    gap: 7.8vw;
+}
+
+.voluntariado_video{
+    width: 29.4792vw;
+    height: calc(0.5625*29.4792vw);
+    background: #D9D9D9;
+    border-radius: 5px;
+}
+
+.volutariado_content {
+    justify-content: center;
+    padding: 0 20vw;
+    gap: 5vw;
+    align-items: center;
 }
