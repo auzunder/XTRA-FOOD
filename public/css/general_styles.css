@@ -207,7 +207,7 @@ rect {
     line-height: 35px;
 }
 
-.text_2{
+.text_left{
     font-size: 24px;
     text-align: left;
     line-height: 35px;
@@ -259,4 +259,10 @@ rect {
 
 .selected_circle{
     background-color: #AF1917;
+}
+
+h1 {
+    color: #AF1917;
+    font-size: 900;
+    font-family: "Montserrat";
 }
