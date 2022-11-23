@@ -48,7 +48,7 @@ h1 {
     padding-top: 200px;
 }
 
-.missão_video {
+.missão_video, .servicos_video {
     width: 57.2917vw;
     height: calc(0.5625*57.2917vw);
     background: #D9D9D9;
@@ -341,10 +341,23 @@ rect {
     font-weight: 900;
 }
 
+.form1_textarea{
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    resize: none;
+    overflow: hidden;
+}
+
 .metodos_pagamento{
     width: 100%;
 }
 
 .metodo_pagamento {
 
+}
+
+/* SERVIÇOS */
+.service_logo{
+    width: 15vw;
 }
