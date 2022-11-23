@@ -18,6 +18,12 @@ a{
     text-decoration: none;
 }
 
+h1 {
+    color: #AF1917;
+    font-size: 900;
+    font-family: "Montserrat";
+}
+
 .flex {
     display: flex;
 }
@@ -36,6 +42,17 @@ a{
 
 .space_between {
     justify-content: space-between;
+}
+
+.wrapper {
+    padding-top: 200px;
+}
+
+.missão_video {
+    width: 57.2917vw;
+    height: calc(0.5625*57.2917vw);
+    background: #D9D9D9;
+    border-radius: 5px;
 }
 
 .login_input{
@@ -70,37 +87,39 @@ rect {
     fill: none;
     stroke-width: 2;
     stroke-dasharray: 422, 0;
-    transition: all 0.35s linear;
+    transition: all 0.5s cubic-bezier(0.25, 0.24, 0.81, 0.46);
 }
 
 .button1_red{
     border: none;
     background-color: #AF1917;
-    border-radius: 2px;
+    border-radius: 3px;
     text-align: center;
     align-items: center;
+    min-width: 370px; /*SOLUÇÃO TEMPORÁRIA*/
 }
 
 .button1_red:hover{
     cursor: pointer;
+    background-color: transparent;
 }
 
 .button1_text_red {
     padding: 25px 50px;
     color: white;
     font-family: "Montserrat";
-    font-size: 32px;
-    transition: all 0.35s linear;
+    font-size: 24px;
+    transition: all 0.5s cubic-bezier(0.25, 0.24, 0.81, 0.46);
 }
 
 .button1_text_red:hover {
     padding: 22px 36px;
-    color: white;
-    font-size: 38px;
+    color: #AF1917;
+    font-size: 28px;
     transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.buttonCTA{
+.button{
     position: relative;
 }
 
@@ -110,7 +129,7 @@ rect {
     border-radius: 2px;
     text-align: center;
     align-items: center;
-    transition: all 0.35s linear;
+    transition: all 0.5s cubic-bezier(0.25, 0.24, 0.81, 0.46);
 }
 
 .button2_yellow rect{
@@ -120,10 +139,10 @@ rect {
 .button2_yellow:hover{
     background-color: #FAD657;
     cursor: pointer;
-    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 0.5s cubic-bezier(0.25, 0.24, 0.81, 0.46);
 }
 
-.buttonCTA:hover rect{
+.button:hover rect{
     stroke-width: 10;
     stroke-dasharray: 0, 310;
     stroke-dashoffset: 48;
@@ -141,7 +160,7 @@ rect {
     padding: 20px 24px;
     color: #AF1917;
     font-size: 32px;
-    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 0.5s cubic-bezier(0.25, 0.24, 0.81, 0.46);
 }
 
 .button2_red {
@@ -155,7 +174,7 @@ rect {
 .button2_red:hover {
     background-color: #AF1917;
     cursor: pointer;
-    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 0.5s cubic-bezier(0.25, 0.24, 0.81, 0.46);
 }
 
 .button2_red rect{
@@ -167,22 +186,22 @@ rect {
     color: #AF1917;
     font-family: "Montserrat";
     font-size: 24px;
-    transition: all 0.35s linear;
+    transition: all 0.5s cubic-bezier(0.25, 0.24, 0.81, 0.46);
 }
 
 .button2_text_red:hover {
     padding: 20px 24px;
     color: #FAD657;
     font-size: 32px;
-    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 0.5s cubic-bezier(0.25, 0.24, 0.81, 0.46);
 }
 
 .button3_red {
-    border: 1px solid #AF1917;
     background-color: white;
     border-radius: 2px;
     text-align: center;
     align-items: center;
+    transition: all 0.25s cubic-bezier(0, -0.25, 1, 2.5);
 }
 
 .button3_text_red {
@@ -192,11 +211,32 @@ rect {
     font-family: "Montserrat";
 }
 
-/* PAGE CONTENT */
+.button3_red rect {
+    stroke: #AF1917;
+    stroke-dasharray: 15, 15;
+}
 
+.button3_red:hover rect {
+    stroke-width: 5;
+    stroke-dasharray: 500, 0;
+    stroke-dashoffset: 48;
+}
+
+.button3_red:hover {
+    background-color: transparent;
+    font-weight: 800;
+}
+
+/* PAGE CONTENT */
 .title{
     font-family: "Montserrat";
     font-size: 64px;
+    font-weight: 900;
+}
+
+.title2 {
+    font-family: "Montserrat";
+    font-size: 32px;
     font-weight: 900;
 }
 
@@ -237,10 +277,6 @@ rect {
     width: 80vw;
 }
 
-.card{
-
-}
-
 .card img{
     width: 20vw;
 }
@@ -261,8 +297,54 @@ rect {
     background-color: #AF1917;
 }
 
-h1 {
+
+/* ESTILOS DE FORMULÁRIOS */
+
+.form_1{
+    gap: 100px;
+    font-size: 24px;
+}
+
+.fomr1_inputs{
+    gap: 50px;
+}
+
+.form1_line{
+    gap: 100px
+}
+
+.form1_inline {
+    gap: 20px;
+}
+
+.form1_input{
+    border: none;
+    background-color: white;
+    border-radius: 5px;
+    border-bottom: #AF1917 solid 1px;
+    padding: 20px;
+    font-size: 24px;
+}
+
+.form1_separador{
+    gap: 2vw;
+}
+
+.form1_separador1{
+    border: #AF1917 solid 1px;
+    width: 40vw;
+}
+
+.form1_separador2{
     color: #AF1917;
-    font-size: 900;
-    font-family: "Montserrat";
+    font-size: 32px;
+    font-weight: 900;
+}
+
+.metodos_pagamento{
+    width: 100%;
+}
+
+.metodo_pagamento {
+
 }

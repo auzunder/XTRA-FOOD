@@ -1,27 +1,27 @@
 @font-face {
     font-family: 'Montserrat';
-    src: url(../fonts/Montserrat-ExtraBold.ttf);
-    font-weight: 900;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Montserrat';
-    src: url(../fonts/Montserrat-ExtraBoldItalic.ttf);
-    font-weight: 900;
-    font-style: italic;
-}
-
-@font-face{
-    font-family: 'Montserrat';
     src: url(../fonts/Montserrat-Black.ttf);
-    font-weight: 800;
+    font-weight: 900;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Montserrat';
     src: url(../fonts/Montserrat-BlackItalic.ttf);
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url(../fonts/Montserrat-ExtraBold.ttf);
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url(../fonts/Montserrat-ExtraBoldItalic.ttf);
     font-weight: 800;
     font-style: italic;
 }
@@ -42,28 +42,28 @@
 
 @font-face {
     font-family: 'Montserrat';
-    src: url(../fonts/Montserrat-Medium.ttf);
-    font-weight: 600;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Montserrat';
-    src: url(../fonts/Montserrat-MediumItalic.ttf);
-    font-weight: 600;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'Montserrat';
     src: url(../fonts/Montserrat-SemiBold.ttf);
-    font-weight: 500;
+    font-weight: 600;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Montserrat';
     src: url(../fonts/Montserrat-SemiBoldItalic.ttf);
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url(../fonts/Montserrat-Medium.ttf);
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url(../fonts/Montserrat-MediumItalic.ttf);
     font-weight: 500;
     font-style: italic;
 }

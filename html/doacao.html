@@ -1,0 +1,36 @@
+<div class="flex flex_center flex_collum wrapper content_wrapper">
+    <div class="flex flex_center flex_collum info_block">
+        <div class="title">PORQUÊ DOAR?</div>
+        <div class="text">
+            Alimenta a vida e não o desperdício.
+            A tua doação ajuda bastante monetáriamente esta organização na criação de novos eventos, campanhas e na ajuda a
+            erradicar a fome.
+            Toda a ajuda é bem vinda!
+        </div>
+    </div>
+    <form method="post" action="doacao/submissao" class="flex flex_center flex_collum form_1">
+        <div class="title2">Informação pessoal</div>
+        <div class="flex flex_collum fomr1_inputs">
+            <div class="flex flex_center form1_line">
+                <input id="primeiro_nome" class="form1_input" type="text" placeholder="Primeiro Nome">
+                <input id="apelido" class="form1_input" type="text" placeholder="Apelido">
+            </div>
+            <div class="flex flex_center form1_line">
+                <input id="email" class="form1_input" type="email" placeholder="Email">
+                <input id="num_telemovel" class="form1_input" type="tel" placeholder="Número de telemóvel">
+            </div>
+        </div>
+        <div class="title2">Doação</div>
+        <div class="flex flex_center form1_inline">
+            <div>Quantidade:</div>
+            <input id="quantidade_donativo" class="form1_input" type="number" placeholder="0.00€">
+        </div>
+        <div class="title2">Informação pessoal</div>
+        <div class="metodos_pagamento flex space_between">
+            <div class="metodo_pagamento flex"><input name="metodo_pagamento" type="radio"><img src="" alt="Multibanco"></div>
+            <div class="metodo_pagamento flex"><input name="metodo_pagamento" type="radio"><img src="" alt="Paypal"></div>
+            <div class="metodo_pagamento flex"><input name="metodo_pagamento" type="radio"><img src="" alt="MBWay"></div>
+        </div>
+        <button class="button1_red button1_text_red" type="submit">CONTINUAR</button>
+    </form>
+</div>

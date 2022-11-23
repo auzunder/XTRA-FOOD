@@ -4,7 +4,7 @@
 
 #CTAs_wrapper{
     position: relative;
-    top: -200px;
+    top: -250px;
     padding: 0 300px;
 }
 
@@ -51,13 +51,6 @@
     color: #AF1917;
 }
 /**/
-
-.missão_video{
-    width: 57.2917vw;
-    height: calc(0.5625*57.2917vw);
-    background: #D9D9D9;
-    border-radius: 5px;
-}
 
 .event_card{
     width: 15vw;

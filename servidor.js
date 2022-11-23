@@ -30,7 +30,7 @@ const logging = (req, res, next) => {
     next()
 }
 
-// Tentar abrir ficheiro
+// Tentar abrir fichieros prinicipais
     try {
         var navbar = fs.readFileSync('html/NavBar.html', 'utf-8');
         var registo_login_popUp = fs.readFileSync('html/registo_login.html', 'utf-8');
@@ -42,6 +42,7 @@ const logging = (req, res, next) => {
         console.error(error)
     }
 
+// PAGINA INICIAL
 servidor.get("/", logging, function (req, res) {
     // Tentar abrir ficheiro
     try {
@@ -88,6 +89,8 @@ servidor.get("/", logging, function (req, res) {
     res.send(html);
 });
 
+
+// PAGINA VOLUNTARIADO
 servidor.get("/voluntariado", logging, function (req, res) {
     // Tentar abrir ficheiro
     try {
@@ -108,12 +111,109 @@ servidor.get("/voluntariado", logging, function (req, res) {
     html += '<meta http-equiv="X-UA-Compatible" content="IE=edge">\n';
     html += '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
     //Title
-    html += '<title>XTRA FOOD</title>\n';
+    html += '<title>Voluntariado | XTRA FOOD</title>\n';
     html += '<link rel="stylesheet" href="css/fonts.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/navbar_css.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/footer_css.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/general_styles.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/voluntariado_css.css" type="text/css">\n';
+    html += '<script src="js/login.js"></script>\n';
+    //HTML close head
+    html += '</head>\n<body>';
+
+    //HTML NavBar
+    html += navbar;
+    //html += '<div id="navbar_ghost_scpace"></div>'
+
+    html += registo_login_popUp;
+
+    //HTML Content
+    html += content;
+
+    html += footer;
+
+    //HTML close
+    html += '\n</body>\n</html>';
+    res.send(html);
+});
+
+servidor.get("/voluntariado/submissao", logging, function (req, res) {
+});
+
+// PAGINA DOAÇÃO
+servidor.get("/doacao", logging, function (req, res) {
+    // Tentar abrir ficheiro
+    try {
+        var content = fs.readFileSync('html/doacao.html', 'utf-8');
+    }
+    // Caso nao consiga da log do erro
+    catch (error){
+        console.error("Erro ao ler ficheiros de conteudo.")
+        console.error(error)
+    }
+
+    var html = "";
+
+    //HTML head
+    html += '<!DOCTYPE html>\n<html lang=pt>\n<head>\n';
+    //HTML head meta
+    html += '<meta charset="utf-8">\n';
+    html += '<meta http-equiv="X-UA-Compatible" content="IE=edge">\n';
+    html += '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
+    //Title
+    html += '<title>Doação | XTRA FOOD</title>\n';
+    html += '<link rel="stylesheet" href="css/fonts.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/navbar_css.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/footer_css.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/general_styles.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/doacao_css.css" type="text/css">\n';
+    html += '<script src="js/login.js"></script>\n';
+    //HTML close head
+    html += '</head>\n<body>';
+
+    //HTML NavBar
+    html += navbar;
+    //html += '<div id="navbar_ghost_scpace"></div>'
+
+    html += registo_login_popUp;
+
+    //HTML Content
+    html += content;
+
+    html += footer;
+
+    //HTML close
+    html += '\n</body>\n</html>';
+    res.send(html);
+});
+
+// PAGINA SOBRE NÓS
+servidor.get("/sobre_nos", logging, function (req, res) {
+    // Tentar abrir ficheiro
+    try {
+        var content = fs.readFileSync('html/sobre_nos.html', 'utf-8');
+    }
+    // Caso nao consiga da log do erro
+    catch (error){
+        console.error("Erro ao ler ficheiros de conteudo.")
+        console.error(error)
+    }
+
+    var html = "";
+
+    //HTML head
+    html += '<!DOCTYPE html>\n<html lang=pt>\n<head>\n';
+    //HTML head meta
+    html += '<meta charset="utf-8">\n';
+    html += '<meta http-equiv="X-UA-Compatible" content="IE=edge">\n';
+    html += '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
+    //Title
+    html += '<title>Doação | XTRA FOOD</title>\n';
+    html += '<link rel="stylesheet" href="css/fonts.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/navbar_css.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/footer_css.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/general_styles.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/sobre_nos_css.css" type="text/css">\n';
     html += '<script src="js/login.js"></script>\n';
     //HTML close head
     html += '</head>\n<body>';
