@@ -1,0 +1,78 @@
+.card_produto{
+
+}
+
+.produto_img {
+    width: 32vw;
+    object-fit: cover;
+    border: none;
+    border-radius: 10px 0 0 10px;
+    height: 32vw;
+    background-color: #878787;
+}
+
+.produto_info{
+    padding: 100px;
+}
+
+.tamanhos input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+}
+
+.tamanhos label {
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px 20px;
+    border-radius: 5px;
+    border: transparent 2px solid;
+}
+
+.tamanhos input[type=radio]:checked+label {
+    color: black;
+    border-radius: 5px;
+    border: black 2px solid;
+}
+
+.tamanhos {
+    width: fit-content;
+    gap: 10px;
+}
+
+.cores input[type="radio"] {
+    display: none;
+}
+
+.cores label {
+    display: flex;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.cores span {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    transition: transform .2s ease-in-out;
+}
+
+.selecao_cores input[type="radio"]:checked+label span{
+    transform: scale(1.25);
+    border: 1px solid black;
+}
+
+.selecao_cores input[type="radio"]:hover+label span{
+    transform: scale(1.25);
+}
+
+.red{
+    background-color: #AF1917;
+}
+
+.yellow {
+    background-color: #FAD657;
+}
