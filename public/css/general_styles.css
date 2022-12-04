@@ -44,6 +44,14 @@ h1 {
     justify-content: space-between;
 }
 
+.gap5{
+    gap: 5px;
+}
+
+.gap10 {
+    gap: 5px;
+}
+
 .wrapper {
     padding-top: 200px;
 }
@@ -240,6 +248,19 @@ rect {
     font-weight: 900;
 }
 
+.title3 {
+    font-family: "Montserrat";
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.title4 {
+    font-family: "Montserrat";
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+}
+
 .text{
     font-size: 24px;
     padding: 0 20vw;
@@ -251,6 +272,19 @@ rect {
     font-size: 24px;
     text-align: left;
     line-height: 35px;
+}
+
+.text2 {
+    font-size: 18px;
+    padding: 0 20vw;
+    text-align: center;
+    line-height: 22px;
+}
+
+.text2_left {
+    font-size: 18px;
+    text-align: left;
+    line-height: 22px;
 }
 
 .info_block{
@@ -415,4 +449,13 @@ rect {
     background-color: #AF1917;
     align-items: center;
     color: white;
+}
+
+/* SELEÇÂO DE CORES */
+.red {
+    background-color: #AF1917;
+}
+
+.yellow {
+    background-color: #FAD657;
 }

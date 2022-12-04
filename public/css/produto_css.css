@@ -1,17 +1,20 @@
 .card_produto{
-
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.25));
 }
 
 .produto_img {
     width: 32vw;
     object-fit: cover;
     border: none;
-    border-radius: 10px 0 0 10px;
     height: 32vw;
+    border-radius: 10px 0 0 10px;
     background-color: #878787;
 }
 
 .produto_info{
+    background-color: white;
+    border-radius: 0 10px 10px 0;
+    height: calc(32vw - 200px);
     padding: 100px;
 }
 
@@ -61,18 +64,10 @@
 }
 
 .selecao_cores input[type="radio"]:checked+label span{
-    transform: scale(1.25);
+    transform: scale(1.05);
     border: 1px solid black;
 }
 
 .selecao_cores input[type="radio"]:hover+label span{
-    transform: scale(1.25);
-}
-
-.red{
-    background-color: #AF1917;
-}
-
-.yellow {
-    background-color: #FAD657;
+    transform: scale(1.05);
 }
