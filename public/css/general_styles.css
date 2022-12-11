@@ -45,19 +45,27 @@ h1 {
 }
 
 .gap5{
-    gap: 5px;
+    gap: 5px !important;
 }
 
 .gap10 {
-    gap: 10px;
+    gap: 10px !important;
 }
 
 .gap25 {
-    gap: 25px;
+    gap: 25px !important;
 }
 
 .gap50 {
-    gap: 50px;
+    gap: 50px !important;
+}
+
+.gap75 {
+    gap: 75px !important;
+}
+
+.gap100 {
+    gap: 100px !important;
 }
 
 .wrapper {

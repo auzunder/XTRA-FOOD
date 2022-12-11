@@ -105,3 +105,7 @@
 .botoes{
     width: 100%;
 }
+
+.info_compra {
+    width: -webkit-fill-available;
+}
