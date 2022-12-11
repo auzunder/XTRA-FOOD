@@ -4,7 +4,7 @@
 
 .produto_img{
     width: 20vw;
-    height: 17vw;
+    height: 15vw;
     object-fit: cover;
     border-radius: 10px 0 0 10px;
 }
@@ -21,7 +21,7 @@
     width: inherit;
     justify-content: space-between;
     /**background-color: white;/**/
-    height: calc(17vw - 100px);
+    height: calc(15vw - 100px);
     /**border-radius: 0 10px 10px 0;/**/
 }
 
@@ -108,4 +108,19 @@
 
 .info_compra {
     width: -webkit-fill-available;
+}
+
+.revisao_morada{
+    width: inherit;
+    background-color: white;
+    border-radius: 10px;
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.25));
+}
+
+.revisao_morada > *{
+    padding: 50px;
+}
+
+.revisao_morada .text2{
+    padding: 0;
 }
