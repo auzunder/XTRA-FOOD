@@ -4,7 +4,7 @@
 
 .produto_img{
     width: 20vw;
-    height: 15vw;
+    height: 17vw;
     object-fit: cover;
     border-radius: 10px 0 0 10px;
 }
@@ -17,14 +17,28 @@
 
 .produto_info{
     gap: 25px;
-    background-color: white;
     padding: 50px;
-    height: calc(15vw - 100px);
-    border-radius: 0 10px 10px 0;
+    width: inherit;
+    justify-content: space-between;
+    /**background-color: white;/**/
+    height: calc(17vw - 100px);
+    /**border-radius: 0 10px 10px 0;/**/
+}
+
+.doacao_info{
+    gap: 25px;
+}
+
+.doacao_card{
+    padding: 50px;
+    align-items: center;
 }
 
 .card_produto {
+    background-color: white;
     filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.25));
+    border-radius: 10px;
+    width: 40vw;
 }
 
 .remover_produto{
@@ -33,5 +47,61 @@
 }
 
 .produtos{
-    
+    width: 40vw;
+}
+
+.info{
+    height: inherit;
+}
+
+
+.input_doacao_qt{
+    border: none;
+    background-color: white;
+    border-radius: 5px;
+    border-bottom: #AF1917 solid 1px;
+    height: 100%;
+    padding: 5px 20px;
+}
+
+.escolha_doacao input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+}
+
+.escolha_doacao label {
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px 20px;
+    border-radius: 5px;
+    border: transparent 2px solid;
+}
+
+.escolha_doacao input[type=radio]:checked+label {
+    color: black;
+    border-radius: 5px;
+    border: black 2px solid;
+}
+
+.escolha_doacao {
+    width: fit-content;
+    gap: 10px;
+    align-items: center;
+}
+
+.preco_total{
+    width: inherit;
+    font-size: 24px;
+    line-height: 35px;
+}
+
+.separador{
+    width: inherit;
+    border: black solid 1px;
+}
+
+.botoes{
+    width: 100%;
 }

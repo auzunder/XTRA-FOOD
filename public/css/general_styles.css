@@ -243,6 +243,62 @@ rect {
     font-weight: 800;
 }
 
+.button4_red {
+    border: none;
+    background-color: #AF1917;
+    border-radius: 5px;
+    text-align: center;
+    align-items: center;
+}
+
+.button4_red:hover {
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.button4_text_red {
+    padding: 10px 30px;
+    color: white;
+    font-family: "Montserrat";
+    font-size: 24px;
+    transition: all 0.5s cubic-bezier(0.25, 0.24, 0.81, 0.46);
+}
+
+.button4_text_red:hover {
+    padding: 7px 25px;
+    color: #AF1917;
+    font-size: 28px;
+    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.button4_grey {
+    border: none;
+    background-color: #a0a0a0;
+    border-radius: 5px;
+    text-align: center;
+    align-items: center;
+}
+
+.button4_grey:hover {
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.button4_text_grey {
+    padding: 10px 30px;
+    color: white;
+    font-family: "Montserrat";
+    font-size: 24px;
+    transition: all 0.5s cubic-bezier(0.25, 0.24, 0.81, 0.46);
+}
+
+.button4_text_grey:hover {
+    padding: 7px 25px;
+    color: #000000;
+    font-size: 28px;
+    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
 /* PAGE CONTENT */
 .title{
     font-family: "Montserrat";
@@ -300,7 +356,7 @@ rect {
 }
 
 .content_wrapper{
-    gap: 250px;
+    gap: 200px;
 }
 
 
@@ -466,4 +522,12 @@ rect {
 
 .yellow {
     background-color: #FAD657;
+}
+
+.color_red{
+    color: #AF1917;
+}
+
+.color_yellow {
+    color: #FAD657;
 }
