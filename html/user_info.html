@@ -1,15 +1,30 @@
 <div class="flex flex_center flex_collum wrapper content_wrapper">
-    <div class="flex flex_center info_block">
-        <div class="title2">CARRINHO</div>
-        <img src="/../images/icons/Seta.svg" alt="seta icon">
-        <div class="title2">INFORMAÇÃO</div>
-        <img src="/../images/icons/Seta.svg" alt="seta icon">
-        <div class="title2 faded">FINALIZAÇÂO</div>
+    <div class="flex flex_center gap25">
+        <div class="profile_img">
+            <img src="" alt="Profile Picture">
+        </div>
+        <div class="flex flex_collum space_between gap25">
+            <div class="title3">Olá Edgar!</div>
+            <div class="text2_left">Bem vindo ao teu perfil</div>
+        </div>
     </div>
+
+    <div class="flex space_between submenu">
+        <div class="button1_red button1_text_red">
+            Informações Pessoais
+        </div>
+        <div class="button button3_red button3_text_red">
+            <svg>
+                <rect x="0" y="0" fill="none" width="100%" height="100%" />
+            </svg>
+            Histórico de Compras
+        </div>
+    </div>
+
     <div class="flex flex_center flex_collum gap75 produtos">
         <form method="post" action="voluntariado/submissao" class="flex flex_center flex_collum form_1">
             <div class="flex flex_collum fomr1_inputs flex_center">
-                <div class="title2">Informação do destinatário</div>
+                <div class="title2">Informações Pessoais</div>
                 <div class="flex flex_center form1_line info_compra">
                     <input id="primeiro_nome" class="form1_input" type="text" placeholder="Primeiro Nome">
                     <input id="apelido" class="form1_input" type="text" placeholder="Apelido">
@@ -27,39 +42,12 @@
                 </div>
                 <input id="email" class="form1_input info_compra" type="text" placeholder="Cidade">
                 <input id="num_telemovel" class="form1_input info_compra" type="tel" placeholder="Número de Telemóvel">
-                <div class="title2">Método de Pagamento</div>
-                <div class="flex flex_center form1_line">
-                    <div class="flex flex_center form1_inline">
-                        <input id="ser_parceiro" class="radio_button" name="servicos" type="radio">
-                        <div>MBWay</div>
-                    </div>
-                    <div class="flex flex_center form1_inline">
-                        <input id="ser_afiliado" class="radio_button" name="servicos" type="radio">
-                        <div>Multibanco</div>
-                    </div>
-                    <div class="flex flex_center form1_inline">
-                        <input id="ser_afiliado" class="radio_button" name="servicos" type="radio">
-                        <div>Paypal</div>
-                    </div>
-                </div>
             </div>
         </form>
-        <div class="flex flex_collum preco_total">
-            <div class="separador"></div>
-            <div class="flex space_between total">
-                <div>TOTAL</div>
-                <div>5€</div>
-            </div>
-        </div>
         <div class="botoes flex flex_center space_between">
-            <a>
-                <div class="button4_grey button4_text_grey" onclick="javascript:history.back()">
-                    Voltar
-                </div>
-            </a>
-            <a href="/loja/carrinho/finalizacao">
+            <a href="#">
                 <div class="button4_red button4_text_red">
-                    Continuar
+                    Guardar
                 </div>
             </a>
         </div>

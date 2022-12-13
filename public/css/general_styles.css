@@ -539,3 +539,15 @@ rect {
 .color_yellow {
     color: #FAD657;
 }
+
+/* PERFIL */
+
+.profile_img, .profile_img>img{
+    width: 7vw;
+    height: 7vw;
+    border-radius: 100%;
+}
+
+.profile_img{
+    background-color: grey;
+}
