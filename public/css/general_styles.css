@@ -24,6 +24,10 @@ h1 {
     font-family: "Montserrat";
 }
 
+.pointer:hover{
+    cursor: pointer;
+}
+
 .flex {
     display: flex;
 }
@@ -277,6 +281,28 @@ rect {
     color: #AF1917;
     font-size: 28px;
     transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.button3_red_outlined:hover {
+    background-color: transparent;
+    font-weight: 800;
+}
+
+.button4_red_outlined {
+    border: 2px solid #AF1917;
+    border-bottom: none;
+    background-color: white;
+    border-radius: 5px;
+    text-align: center;
+    align-items: center;
+}
+
+.button4_text_red_outlined {
+    padding: 10px 30px;
+    color: #AF1917;
+    font-family: "Montserrat";
+    font-size: 24px;
+    transition: all 0.5s cubic-bezier(0.25, 0.24, 0.81, 0.46);
 }
 
 .button4_grey {
@@ -550,4 +576,51 @@ rect {
 
 .profile_img{
     background-color: grey;
+}
+
+.fill_available{
+    width: -webkit-fill-available;
+}
+
+.fit_content {
+    height: fit-content;
+}
+
+.align_items_center{
+    align-items: center;
+}
+
+.submenu{
+    padding: 0 25vw;
+}
+
+.user_historico{
+    padding: 0 20vw;
+}
+
+.user_historico > * {
+    border: solid #AF1917 2px;
+    border-radius: 5px;
+    padding: 2vw;
+}
+
+.rotate90{
+    rotate: 90deg;
+}
+
+.produto_singular{
+    background-color: white;
+    filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.25));
+    border-radius: 10px;
+}
+
+.produto_img_encomenda{
+    height: 7vw;
+    width: 10vw;
+    object-fit: cover;
+    border-radius: 10px 0 0 10px;
+}
+
+.produto_card_encomenda{
+    padding: 1vw;
 }

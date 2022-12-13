@@ -9,39 +9,38 @@
         </div>
     </div>
 
-    <div class="flex space_between submenu">
-        <div class="button1_red button1_text_red">
+    <div class="flex space_between submenu space_between fill_available">
+        <div class="button4_red_outlined button4_text_red_outlined">
             Informações Pessoais
         </div>
-        <div class="button button3_red button3_text_red">
-            <svg>
-                <rect x="0" y="0" fill="none" width="100%" height="100%" />
-            </svg>
-            Histórico de Compras
-        </div>
+        <a href="/user/history">
+            <div class="button4_red button4_text_red">
+                Histórico de Compras
+            </div>
+        </a>
     </div>
 
     <div class="flex flex_center flex_collum gap75 produtos">
         <form method="post" action="voluntariado/submissao" class="flex flex_center flex_collum form_1">
-            <div class="flex flex_collum fomr1_inputs flex_center">
+            <div class="flex flex_collum fomr1_inputs flex_center fill_available">
                 <div class="title2">Informações Pessoais</div>
-                <div class="flex flex_center form1_line info_compra">
+                <div class="flex flex_center form1_line info_compra fill_available">
                     <input id="primeiro_nome" class="form1_input" type="text" placeholder="Primeiro Nome">
                     <input id="apelido" class="form1_input" type="text" placeholder="Apelido">
                 </div>
-                <div class="flex flex_center form1_line info_compra">
+                <div class="flex flex_center form1_line info_compra fill_available">
                     <input id="primeiro_nome" class="form1_input" type="email" placeholder="Email">
-                    <input id="apelido" class="form1_input" type="tel" placeholder="Telemóvel">
+                    <input id="apelido" class="form1_input" type="tel" maxlength="9" placeholder="Telemóvel">
                 </div>
                 <div class="title2">Informação de envio</div>
-                <input id="email" class="form1_input info_compra" type="text" placeholder="Endereço">
-                <div class="flex flex_center gap10 form1_line info_compra">
-                    <input id="num_telemovel" class="form1_input info_compra" type="num" maxlength="4" placeholder="Codigo">
+                <input id="email" class="form1_input info_compra fill_available" type="text" placeholder="Endereço">
+                <div class="flex flex_center gap10 form1_line info_compra fill_available">
+                    <input id="num_telemovel" class="form1_input info_compra fill_available" type="num" maxlength="4" placeholder="Codigo">
                     <div>-</div>
                     <input id="num_telemovel" class="form1_input" type="num" maxlength="3" placeholder="Postal">
                 </div>
-                <input id="email" class="form1_input info_compra" type="text" placeholder="Cidade">
-                <input id="num_telemovel" class="form1_input info_compra" type="tel" placeholder="Número de Telemóvel">
+                <input id="email" class="form1_input info_compra fill_available" type="text" placeholder="Cidade">
+                <input id="num_telemovel" class="form1_input info_compra fill_available" type="tel" placeholder="Número de Telemóvel">
             </div>
         </form>
         <div class="botoes flex flex_center space_between">
