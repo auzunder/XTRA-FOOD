@@ -1,6 +1,7 @@
 * {
     margin: 0;
     font-family: "Montserrat";
+    -webkit-box-sizing: initial !important;
     /**border: black solid 1px;/**/
 }
 
@@ -14,8 +15,8 @@ body{
 }
 
 a{
-    color: black;
-    text-decoration: none;
+    color: black !important;
+    text-decoration: none !important;
 }
 
 h1 {
@@ -73,7 +74,7 @@ h1 {
 }
 
 .wrapper {
-    padding-top: 200px;
+    padding-top: 200px !important;
 }
 
 .missão_video, .servicos_video {

@@ -40,8 +40,9 @@
         <div id="our_mission_title" class="title">
             A NOSSA MISSÃO
         </div>
-        <video class="missão_video">
-
+        <video id="missao_video_tag" class="missão_video" controls autoplay loop muted>
+            <source src="/video/ABOUT US.mp4" type="video/mp4">
+            Your browser does not support the video element.
         </video>
         <div id="our_mission_text" class="text text_left">
             Sabias que cerca de 8 mil pessoas estão em situação de sem-abrigo em Portugal, de acordo com dados avançados pelo
@@ -65,20 +66,20 @@
         </div>
         <div class="flex flex_center eventos">
             <a> <!-- COMPLETAR LINK -->
-                <div class="event_card">
-                    <img alt="" src="">
+                <div class="event_card pointer">
+                    <img id="cartaz_1" alt="cartaz_1" src="">
                 </div>
             </a>
             <a>
                 <!-- COMPLETAR LINK -->
-                <div class="event_card">
-                    <img alt="" src="">
+                <div class="event_card pointer">
+                    <img id="cartaz_2" alt="cartaz_2" src="">
                 </div>
             </a>
             <a>
                 <!-- COMPLETAR LINK -->
-                <div class="event_card">
-                    <img alt="" src="">
+                <div class="event_card pointer">
+                    <img id="cartaz_3" alt="cartaz_3" src="">
                 </div>
             </a>
         </div>
@@ -201,7 +202,7 @@
         <div id="our_mission_text" class="text text_left">
             Aqui estão os nossos parceiros, dá uma olhada:
         </div>
-        <div class="carousel">
+        <!--<div class="carousel">
             <div class="cards">
                 <div class="card">
                     <img src="images/parceiros logos/refood.jpg" alt="refood logo">
@@ -221,7 +222,103 @@
                 <div class="selection_circles"></div>
                 <div class="selection_circles selected_circle"></div>
             </div>
+        </div>-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="carousel carousel-showmanymoveone slide" id="carousel-tilenav" data-interval="false">
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <div style="position: relative;" class="col-xs-12 col-sm-6 col-md-4">
+                                    <a href="#"><img src="images/parceiros logos/refood.jpg" alt="refood logo" class="img-responsive"></a>
+                                    <div class="flex space_between flex_collum flex_center" style="position: absolute; top: 50px; width: calc(100% - 50px); height: calc(100% - 50px); background-color: rgba(255, 255, 255, 0.85);">
+                                        <div style="padding:25px; font-size: 18px;" class="">
+                                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto repellendus quae iure
+                                        </div>
+                                        <a class="btn" style="background-color: #AF1917; border-radius: 2px; margin-bottom: 25px;">
+                                            <div style="color:white; font-size: 24px;">Visitar</div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <a href="#"><img src="images/parceiros logos/OLIO.jpg" alt="too good to go logo" class="img-responsive"></a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <a href="#"><img src="images/parceiros logos/too good to go.jpg" alt="too good to go logo" class="img-responsive"></a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <a href="#"><img src="images/parceiros logos/PHENIX.jpg" alt="too good to go logo" class="img-responsive"></a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <a href="#"><img src="images/parceiros logos/MINHA GENTE.jpg" alt="too good to go logo" class="img-responsive"></a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <a href="#"><img src="images/parceiros logos/CÁRITAS DIOCESANA.jpg" alt="too good to go logo" class="img-responsive"></a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <a href="#"><img src="images/parceiros logos/APPACDM.jpg" alt="too good to go logo" class="img-responsive"></a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <a href="#"><img src="images/parceiros logos/LBV.jpg" alt="too good to go logo" class="img-responsive"></a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <a href="#"><img src="images/parceiros logos/CENTRO DE APOIO AO SEM ABRIGO.jpg" alt="too good to go logo" class="img-responsive"></a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <a href="#"><img src="images/parceiros logos/BANCO ALIMENTAR.jpg" alt="too good to go logo" class="img-responsive"></a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <a href="#"><img src="images/parceiros logos/ASSOCIAÇÃO INTEGRAR.jpg" alt="too good to go logo" class="img-responsive"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="left carousel-control" href="#carousel-tilenav" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                        <a class="right carousel-control" href="#carousel-tilenav" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
+        <script>
+            (function () {
+                    $('.carousel-showmanymoveone .item').each(function () {
+                        var itemToClone = $(this);
+
+                        for (var i = 1; i < 3; i++) {
+                            itemToClone = itemToClone.next();
+
+                            // wrap around if at end of item collection
+                            if (!itemToClone.length) {
+                                itemToClone = $(this).siblings(':first');
+                            }
+
+                            // grab item, clone, add marker class, add to collection
+                            itemToClone.children(':first-child').clone()
+                                .addClass("cloneditem-" + (i))
+                                .appendTo($(this));
+                        }
+                    });
+                }());
+        </script>
         <a href="/parceiros">
             <div class="button button3_red button3_text_red">
                 <svg>
