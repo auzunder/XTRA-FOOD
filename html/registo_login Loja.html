@@ -3,13 +3,13 @@
 <div id="registo_popUp" class="login_background flex flex_center">
     <div class="login_popup flex flex_center flex_collum">
         <img src="/../images/logos/main.png" alt="logo">
-        <form class="login_registo_form flex flex_center flex_collum">
-            <input id="registo_nome" class="text_input login_input" type="text" placeholder="Nome*">
-            <input id="registo_email" class="text_input login_input" type="email" placeholder="Email*">
-            <input id="registo_telemovel" class="text_input login_input" type="tel" placeholder="Telemóvel">
-            <input id="registo_password" class="text_input login_input" type="text" placeholder="Password*">
-            <input id="registo_password_repetido" class="text_input login_input" type="text" placeholder="Repetir Password*">
-            <p class="alternativa">Tens conta? <a href="#" onclick="session_abrirFechar('login_popUp', 'registo_popUp', false)" style="color: #AF1917;">Iniciar sessão</a>.</p> <!-- Criar função para abrir e fechar popUp-->
+        <form class="login_registo_form flex flex_center flex_collum" method="post" action="processa_registo">
+            <input name=nome id="registo_nome" class="text_input login_input" type="text" placeholder="Nome*">
+            <input name=email id="registo_email" class="text_input login_input" type="email" placeholder="Email*">
+            <input name=num_tel id="registo_telemovel" class="text_input login_input" type="tel" placeholder="Telemóvel">
+            <input name=password id="registo_password" class="text_input login_input" type="password" placeholder="Password*">
+            <input name=password2 id="registo_password_repetido" class="text_input login_input" type="password" placeholder="Repetir Password*">
+            <p class="alternativa">Tens conta? <span class="pointer" onclick="session_abrirFechar('login_popUp', 'registo_popUp', false)" style="color: #AF1917;">Iniciar sessão</span>.</p> <!-- Criar função para abrir e fechar popUp-->
             <button class="button4_red button4_text_red" onclick="session_abrirFechar('login_popUp', 'registo_popUp', true)">REGISTO</button>
         </form>
     </div>
@@ -20,10 +20,10 @@
 <div id="login_popUp" class="login_background flex flex_center">
     <div class="login_popup flex flex_center flex_collum">
         <img src="/../images/logos/main.png" alt="logo">
-        <form action="/Login" method="post" class="login_registo_form flex flex_center flex_collum">
-            <input id="login_email" class="text_input login_input" type="email" placeholder="Email*">
-            <input id="login_password" class="text_input login_input" type="text" placeholder="Password*">
-            <p class="alternativa">Ainda nao tens conta? <a href="#" onclick="" style="color: #AF1917;">Faz o registo aqui!</a>.</p>
+        <form class="login_registo_form flex flex_center flex_collum" method="post" action="processa_login">
+            <input name="email" id="login_email" class="text_input login_input" type="email" placeholder="Email*">
+            <input name="password" id="login_password" class="text_input login_input" type="password" placeholder="Password*">
+            <p class="alternativa">Ainda nao tens conta? <span class="pointer" onclick="session_abrirFechar('registo_popUp', 'login_popUp', false)" style="color: #AF1917;">Faz o registo aqui!</span>.</p>
             <button class="button4_red button4_text_red" type="submit">LOGIN</button>
         </form>
     </div>

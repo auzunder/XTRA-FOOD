@@ -2,6 +2,7 @@ const session = require('express-session');
 const express = require('express');
 const fs = require('fs');
 const mysql = require("mysql2");
+const sha = require('sha1');
 
 const fileUpload = require("express-fileupload");
 
@@ -57,6 +58,83 @@ const logging = (req, res, next) => {
         console.error(error)
     }
 
+
+servidor.post("/processa_newsletter", logging, function (req, res) {
+    var query = '';
+
+    query += 'INSERT INTO newsletter(email) VALUES("' + req.body.email + '");';
+    pool.query(query, function (err, result, fields) {
+        if (!err) {
+            res.redirect('back')
+        }
+        else {
+            console.log(err)
+            console.log('Erro ao executar pedido ao servidor')
+            res.redirect('/internal_error')
+        }
+    });
+
+});
+
+
+servidor.post("/processa_registo", logging, function (req, res) {
+    var query = '';
+    if (req.body.num_tel){
+        query += 'INSERT INTO cliente (nome, email, password, num_tel) VALUES ("' + req.body.nome + '", "' + req.body.email + '", "' + sha(req.body.password) + '", "' + req.body.num_tel + '");';
+    }else{
+        query += 'INSERT INTO cliente (nome, email, password) VALUES ("' + req.body.nome + '", "' + req.body.email + '", "' + sha(req.body.password) + '");';
+    }
+    console.log(query);
+
+    pool.query(query, function (err, result, fields) {
+        if (!err) {
+            req.session.login_ = true
+            res.redirect('back')
+        }
+        else {
+            console.log(err)
+            console.log('Erro ao executar pedido ao servidor')
+            res.redirect('/internal_error')
+        }
+    });
+});
+
+servidor.post("/processa_login", logging, function (req, res) {
+    var query = '';
+    query += 'SELECT idCliente, nome, email, password FROM cliente WHERE email = "' + req.body.email + '" AND password = "' + sha(req.body.password) + '";';
+
+    pool.query(query, function (err, result, fields) {
+        if (!err) {
+            if (result && result.length > 0) {
+                console.log(result)
+                req.session.login_ = null
+                req.session.idCliente = result[0].idCliente
+                return res.redirect('back')
+            }else{
+                console.log('Sem resultados SQL')
+                return res.redirect('/internal_error')
+            }
+        }
+        else {
+            console.log(err)
+            console.log('Erro ao executar pedido ao servidor')
+            return res.redirect('/internal_error')
+        }
+    });
+});
+
+
+servidor.get("/log_out", logging, function (req, res) {
+    req.session.destroy(function (err) {
+        if (err) {
+            console.log(err);
+            return res.redirect('/internal_error')
+        }else{
+            return res.redirect('/');
+        };
+    });
+});
+
 // PAGINA INICIAL
 servidor.get("/", logging, function (req, res) {
     var query ='';
@@ -95,13 +173,17 @@ servidor.get("/", logging, function (req, res) {
     
     //HTML NavBar
     html += navbar;
-    if (req.session.username){
+    if (req.session.idCliente){
         html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
          html += '</div></div></header>';
     }else{
-        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'registo_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
         html += '</div></div></header>';
         html += registo_login_popUp;
+    }
+
+    if (req.session.login_) {
+        html += '<script> session_abrir("login_popUp"); </script>';
     }
     
     //HTML Content
@@ -111,15 +193,14 @@ servidor.get("/", logging, function (req, res) {
     pool.query(query, function (err, result, fields) {
         if (!err) {
             if (result && result.length > 0) {
-                console.log(result)
+                //console.log(result)
                 html += '\n<script>';
-                
                 for (var index in result){
                     html += 'document.getElementById("cartaz_' + (parseInt(index)+1).toString() + '").src = "images/eventos/' + (parseInt(index)+1).toString() + '.jpg";\n';
+                    if (index > 1){
+                        break;
+                    }
                 }
-                //html += 'document.getElementById("cartaz_2")';
-                //html += 'document.getElementById("cartaz_3")';
-
                 html += '\n</script>\n';
             }else {
                 console.log('Não foi possível obter resultados')
@@ -170,7 +251,14 @@ servidor.get("/voluntariado", logging, function (req, res) {
 
     //HTML NavBar
     html += navbar;
-    //html += '<div id="navbar_ghost_scpace"></div>'
+    if (req.session.idCliente){
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+         html += '</div></div></header>';
+    }else{
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'registo_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '</div></div></header>';
+        html += registo_login_popUp;
+    }
 
     html += registo_login_popUp;
 
@@ -221,6 +309,14 @@ servidor.get("/doacao", logging, function (req, res) {
 
     //HTML NavBar
     html += navbar;
+    if (req.session.idCliente){
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+         html += '</div></div></header>';
+    }else{
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'registo_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '</div></div></header>';
+        html += registo_login_popUp;
+    }
     //html += '<div id="navbar_ghost_scpace"></div>'
 
     html += registo_login_popUp;
@@ -269,6 +365,14 @@ servidor.get("/sobre_nos", logging, function (req, res) {
 
     //HTML NavBar
     html += navbar;
+    if (req.session.idCliente){
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+         html += '</div></div></header>';
+    }else{
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'registo_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '</div></div></header>';
+        html += registo_login_popUp;
+    }
     //html += '<div id="navbar_ghost_scpace"></div>'
 
     html += registo_login_popUp;
@@ -317,6 +421,14 @@ servidor.get("/parceiros", logging, function (req, res) {
 
     //HTML NavBar
     html += navbar;
+    if (req.session.idCliente){
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+         html += '</div></div></header>';
+    }else{
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'registo_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '</div></div></header>';
+        html += registo_login_popUp;
+    }
     //html += '<div id="navbar_ghost_scpace"></div>'
 
     html += registo_login_popUp;
@@ -366,6 +478,14 @@ servidor.get("/eventos", logging, function (req, res) {
 
     //HTML NavBar
     html += navbar;
+    if (req.session.idCliente){
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+         html += '</div></div></header>';
+    }else{
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'registo_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '</div></div></header>';
+        html += registo_login_popUp;
+    }
     //html += '<div id="navbar_ghost_scpace"></div>'
 
     html += registo_login_popUp;
@@ -414,6 +534,14 @@ servidor.get("/loja", logging, function (req, res) {
 
     //HTML NavBar
     html += navbar;
+    if (req.session.idCliente){
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+         html += '</div></div></header>';
+    }else{
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'registo_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '</div></div></header>';
+        html += registo_login_popUp;
+    }
     //html += '<div id="navbar_ghost_scpace"></div>'
 
     html += registo_login_popUp;

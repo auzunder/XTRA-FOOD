@@ -625,3 +625,23 @@ rect {
 .produto_card_encomenda{
     padding: 1vw;
 }
+
+
+
+.partner_info {
+    opacity: 0;
+    transition: 0.3s;
+}
+
+
+.partner_card:hover .partner_info {
+    opacity: 1;
+}
+
+.partner_card {
+    position: relative;
+}
+
+.partner_card:hover {
+    filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.3));
+}

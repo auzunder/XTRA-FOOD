@@ -4,8 +4,8 @@
     <div class="newsletter flex flex_center flex_collum">
         <div class="newsletter_text1">Subscreve à nossa Newsletter</div>
         <div class="newsletter_text2">e nunca mais percas oportunidades únicas</div>
-        <form class="newsletter_form flex">
-            <input type="email" class="text_input email_input" placeholder="username@email.com">
+        <form class="newsletter_form flex" method="post" action="/processa_newsletter">
+            <input type="email" name="email" class="text_input email_input" placeholder="username@email.com" required>
             <button type="submit" class="submeter_button">Submeter</button>
         </form>
     </div>
