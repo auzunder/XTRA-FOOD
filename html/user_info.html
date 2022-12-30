@@ -1,12 +1,14 @@
 <div class="flex flex_center flex_collum wrapper content_wrapper">
     <div class="flex flex_center gap25">
         <div class="profile_img">
-            <img src="" alt="Profile Picture">
+            <img id=profile_pic src="" alt="Profile Picture">
         </div>
         <div class="flex flex_collum space_between gap25">
-            <div class="title3">Olá Edgar!</div>
+            <div id="welcome_nome" class="title3">Olá Edgar!</div>
             <div class="text2_left">Bem vindo ao teu perfil</div>
-            <a href="/log_out"><div style="font-size: 14px; line-height: 16px;" class="button4_red button4_text_red">Log Out</div></a>
+            <a href="/log_out">
+                <div style="font-size: 14px; line-height: 16px;" class="button4_red button4_text_red">Log Out</div>
+            </a>
         </div>
     </div>
 
@@ -22,34 +24,28 @@
     </div>
 
     <div class="flex flex_center flex_collum gap75 produtos">
-        <form method="post" action="voluntariado/submissao" class="flex flex_center flex_collum form_1">
+        <form method="post" action="alterar_info_utilizador" class="flex flex_center flex_collum form_1">
             <div class="flex flex_collum fomr1_inputs flex_center fill_available">
                 <div class="title2">Informações Pessoais</div>
+                <input name=nome id="nome" class="form1_input info_compra fill_available" type="text" placeholder="Nome Completo" required>
                 <div class="flex flex_center form1_line info_compra fill_available">
-                    <input id="primeiro_nome" class="form1_input" type="text" placeholder="Primeiro Nome">
-                    <input id="apelido" class="form1_input" type="text" placeholder="Apelido">
-                </div>
-                <div class="flex flex_center form1_line info_compra fill_available">
-                    <input id="primeiro_nome" class="form1_input" type="email" placeholder="Email">
-                    <input id="apelido" class="form1_input" type="tel" maxlength="9" placeholder="Telemóvel">
+                    <input name=email id="email" class="form1_input" type="email" placeholder="Email" required>
+                    <input name=num_tel id="num_tel" class="form1_input" type="tel" maxlength="9" placeholder="Telemóvel" required>
                 </div>
                 <div class="title2">Informação de envio</div>
-                <input id="email" class="form1_input info_compra fill_available" type="text" placeholder="Endereço">
+                <input name=linha_endereço id="linha_endereço" class="form1_input info_compra fill_available" type="text" placeholder="Endereço" required>
                 <div class="flex flex_center gap10 form1_line info_compra fill_available">
-                    <input id="num_telemovel" class="form1_input info_compra fill_available" type="num" maxlength="4" placeholder="Codigo">
+                    <input name=cod_postal_1 id="cod_postal_1" class="form1_input info_compra fill_available" type="num" maxlength="4" placeholder="Codigo" required>
                     <div>-</div>
-                    <input id="num_telemovel" class="form1_input" type="num" maxlength="3" placeholder="Postal">
+                    <input name=cod_postal_2 id="cod_postal_2" class="form1_input" type="num" maxlength="3" placeholder="Postal" required>
                 </div>
-                <input id="email" class="form1_input info_compra fill_available" type="text" placeholder="Cidade">
-                <input id="num_telemovel" class="form1_input info_compra fill_available" type="tel" placeholder="Número de Telemóvel">
+                <input name=distrito id="distrito" class="form1_input info_compra fill_available" type="text" placeholder="Distrito" required>
+            </div>
+            <div class="botoes flex flex_center space_between">
+                <button type="submit" class="button4_red button4_text_red">
+                    Guardar
+                </button>
             </div>
         </form>
-        <div class="botoes flex flex_center space_between">
-            <a href="#">
-                <div class="button4_red button4_text_red">
-                    Guardar
-                </div>
-            </a>
-        </div>
     </div>
 </div>

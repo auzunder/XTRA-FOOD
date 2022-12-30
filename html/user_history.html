@@ -1,11 +1,14 @@
 <div class="flex flex_center flex_collum wrapper content_wrapper">
     <div class="flex flex_center gap25">
         <div class="profile_img">
-            <img src="" alt="Profile Picture">
+            <img id=profile_pic src="" alt="Profile Picture">
         </div>
         <div class="flex flex_collum space_between gap25">
-            <div class="title3">Olá Edgar!</div>
+            <div id="welcome_nome" class="title3">Olá Edgar!</div>
             <div class="text2_left">Bem vindo ao teu perfil</div>
+            <a href="/log_out">
+                <div style="font-size: 14px; line-height: 16px;" class="button4_red button4_text_red">Log Out</div>
+            </a>
         </div>
     </div>
 
@@ -19,33 +22,33 @@
             Histórico de Compras
         </div>
     </div>
-
+    <!--
     <div class="flex flex_center flex_collum gap75 user_historico fill_available">
         <div class="flex flex_collum flex_center gap25 fill_available">
-
             <div class="flex flex_center space_between fill_available">
                 <div class="flex flex_collum gap10">
                     <div>
-                        Encomenda nº: 77231
+                        Encomenda nº: 9999
                     </div>
                     <div>
-                        Data da encomenda: 16/6/2022
+                        Data da encomenda: DD/MM/YYYY
                     </div>
                     <div>
-                        Total: 10€
+                        Total: 00.00 €
                     </div>
-                    <div class="flex gap10 pointer">
+                    <div id="hide_show_produtos" class="flex gap10 pointer">
                         <div>Ver detalhes</div>
-                        <img class="rotate90" src="/../images/icons/Seta_detalhes.svg" alt="">
+                        <img id="hide_show_produtos_seta" class="" src="/../images/icons/Seta_detalhes.svg" alt="">
                     </div>
                 </div>
                 <div class="button4_red button4_text_red fit_content">Reencomendar</div>
             </div>
 
-            <div class="encomenda_produtos fill_available">
+            <div id="encomenda_produtos" class="flex flex_collum encomenda_produtos fill_available gap10 hidden">
+
                 <div class="flex produto_singular">
-                    <img class="produto_img_encomenda" alt="imagem de produto - Ultrafood" src="/../images/produtos/tote_bag.jpg">
-                    <div class="flex space_between">
+                    <img class="produto_img_encomenda" alt="imagem de produto - Ultrafood" src="/../images/produtos/4.jpg">
+                    <div style='flex-grow: 1;' class="flex space_between">
                         <div class="flex flex_collum space_between produto_card_encomenda"> 
                             <div class="title3">Ultrafood</div>
                             <div class="flex gap10">
@@ -57,29 +60,21 @@
                                 <div class="tamanho_selecionado"> 1L </div>
                             </div>
                         </div>
-                        <div class=""> </div>
+                        <div style="align-items: end;justify-content: center; padding-right:50px;" class="flex flex_collum produto_card_encomenda gap10">
+                            <a href=""><div class="button5_red button5_text_red fit_content">Ver Produto</div></a>
+                            <div class="flex gap10 flex_center">
+                                <div class="disponibilidade_circle green"></div>
+                                <div class="text2_left"> disponibilidade </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="flex flex_center space_between fill_available">
-            <div class="flex flex_collum gap10">
-                <div>
-                    Encomenda nº: 77231
-                </div>
-                <div>
-                    Data da encomenda: 16/6/2022
-                </div>
-                <div>
-                    Total: 10€
-                </div>
-                <div class="flex gap10 pointer">
-                    <div>Ver detalhes</div>
-                    <img class="" src="/../images/icons/Seta_detalhes.svg" alt="">
-                </div>
             </div>
-            <div class="button4_red button4_text_red fit_content">Reencomendar</div>
+
+            <script src="/../js/open_show_produtos_encomenda.js"></script>
+            
         </div>
     </div>
-</div>
+
+</div>-->
