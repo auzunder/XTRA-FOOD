@@ -78,34 +78,34 @@
         </div>
     </div>
     <div class="flex flex_center flex_collum info_block">
-        <form method="post" action="voluntariado/submissao" class="flex flex_center flex_collum form_1">
+        <form method="post" action="processa_parceiros" class="flex flex_center flex_collum form_1">
             <div class="title">TORNA-TE PARCEIRO</div>
             <div class="flex flex_collum fomr1_inputs flex_center">
                 <div class="title2">Informação Pessoal</div>
                 <div class="flex flex_center form1_line">
-                    <input id="primeiro_nome" class="form1_input" type="text" placeholder="Primeiro Nome">
-                    <input id="apelido" class="form1_input" type="text" placeholder="Apelido">
+                    <input name="nome" id="primeiro_nome" class="form1_input" type="text" placeholder="Primeiro Nome">
+                    <input name="apelido" id="apelido" class="form1_input" type="text" placeholder="Apelido">
                 </div>
                 <div class="flex flex_center form1_line">
-                    <input id="primeiro_nome" class="form1_input" type="email" placeholder="Email">
-                    <input id="apelido" class="form1_input" type="tel" placeholder="Telemóvel">
+                    <input name="email" id="email" class="form1_input" type="email" placeholder="Email">
+                    <input name="num_tel" id="num_tel" class="form1_input" type="tel" placeholder="Telemóvel">
                 </div>
                 <div class="title2">Informação da empresa</div>
                 <div class="flex flex_center form1_line">
-                    <input id="email" class="form1_input" type="text" placeholder="Nome da Empresa">
-                    <input id="num_telemovel" class="form1_input" type="tel" placeholder="Telemóvel">
+                    <input name="nome_empresa" id="nome_empresa" class="form1_input" type="text" placeholder="Nome da Empresa">
+                    <input name="num_tel_empresa" id="num_tel_empresa" class="form1_input" type="tel" placeholder="Telemóvel">
                 </div>
                 <div class="flex flex_center form1_line">
-                    <input id="email" class="form1_input" type="url" placeholder="Pagina Web">
-                    <input id="num_telemovel" class="form1_input" type="email" placeholder="Email">
+                    <input name="pag_web_empresa" id="pag_web_empresa" class="form1_input" type="url" placeholder="Pagina Web">
+                    <input name="email_empresa" id="email_empresa" class="form1_input" type="email" placeholder="Email">
                 </div>
                 <div class="flex flex_center form1_line">
                     <div class="flex flex_center form1_inline">
-                        <input id="ser_parceiro" class="radio_button" name="servicos" type="radio">
+                        <input style="width: 25px;height: 25px;" name="tipo_de_servico" id="ser_parceiro" class="radio_button" value="parceiro" type="radio">
                         <div>Quero ser Parceiro</div>
                     </div>
                     <div class="flex flex_center form1_inline">
-                        <input id="ser_afiliado" class="radio_button" name="servicos" type="radio">
+                        <input style="width: 25px;height: 25px;" name="tipo_de_servico" id="ser_afiliado" class="radio_button" value="afiliado" type="radio">
                         <div>Quero ser Afiliado</div>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                         element.style.height = (element.scrollHeight) + "px";
                     }
                 </script>
-                <textarea id="descricao_empresa" class="form1_textarea flex flex_center" name="descricao_empresa"
+                <textarea name="descricao_empresa" id="descricao_empresa" class="form1_textarea flex flex_center"
                     oninput="auto_grow(this)" placeholder="Desvreve a tua empresa em algumas palavras..."></textarea>
             </div>
             <button class="button1_red button1_text_red" type="submit">SUBMETER</button>

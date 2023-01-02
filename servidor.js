@@ -369,6 +369,10 @@ servidor.get("/obrigado", logging, function (req, res) {
         var pag_volta = '/';
         var pag_volta_nome = 'Home';
         var obrigado_text = 'Obrigado pelo teu registo na nossa newsletter! Iremos sempre enviar informações importantes sobre o que temos feito e sobre os nossos eventos.';
+    }else if (req.query.motivo == 'pedido_servico') {
+        var pag_volta = '/parceiros';
+        var pag_volta_nome = 'Parceiros';
+        var obrigado_text = 'Obrigado pelo teu pedido! Assim que possível, iremos rever a sua aplicação e entraremos em contacto caso seja aceite.';
     }
 
     //HTML Content
@@ -439,7 +443,7 @@ servidor.get("/doacao", logging, function (req, res) {
     res.send(html);
 });
 
-// GUARDAR FORM REGISTO
+// GUARDAR FORM DOAÇAO
 servidor.post("/processa_doacao", logging, function (req, res) {
     var query = '';
     query += 'INSERT INTO doacao (nome, apelido, num_tel, email, quantidade, metodo, data) VALUES ("' + req.body.nome + '", "' + req.body.apelido + '", "' + req.body.num_tel + '", "' + req.body.email + '", "' + req.body.quantidade_donativo + '", "' + req.body.metodo_pagamento + '", "' + ((new Date().toISOString()).replace('T', ' ')).replace('Z', '') + '");';
@@ -570,6 +574,33 @@ servidor.get("/parceiros", logging, function (req, res) {
     //HTML close
     html += '\n</body>\n</html>';
     res.send(html);
+});
+
+// GUARDAR FORM PARCEIROS
+servidor.post("/processa_parceiros", logging, function (req, res) {
+    var query = '';
+    query += 'INSERT INTO pedidos_servicos (nome, apelido, email, num_tel, nome_empresa, num_tel_empresa, pag_web_empresa, email_empresa, parceiro_afiliado, decricao_empresa) VALUES ("' 
+    + req.body.nome + '", "' 
+    + req.body.apelido + '", "' 
+    + req.body.email + '", "' 
+    + req.body.num_tel + '", "' 
+    + req.body.nome_empresa + '", "' 
+    + req.body.num_tel_empresa + '", "' 
+    + req.body.pag_web_empresa + '", "' 
+    + req.body.email_empresa + '", "' 
+    + req.body.tipo_de_servico + '", "' 
+    + req.body.descricao_empresa + '");';
+    console.log(query);
+
+    pool.query(query, function (err, result, fields) {
+        if (!err) {
+            return res.status(200).redirect('/obrigado?motivo=pedido_servico');
+        } else {
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
+        };
+    });
 });
 
 // PAGINA EVENTOS
