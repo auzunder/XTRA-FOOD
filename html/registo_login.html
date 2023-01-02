@@ -20,7 +20,7 @@
 <div id="login_popUp" class="login_background flex flex_center">
     <div class="login_popup flex flex_center flex_collum">
         <img src="images/logos/main.png" alt="logo">
-        <form class="login_registo_form flex flex_center flex_collum" method="post" action="processa_login">
+        <form id=login_form_tag class="login_registo_form flex flex_center flex_collum" method="post" action="processa_login">
             <input name="email" id="login_email" class="text_input login_input" type="email" placeholder="Email*">
             <input name="password" id="login_password" class="text_input login_input" type="password" placeholder="Password*">
             <p class="alternativa">Ainda nao tens conta? <span class="pointer" onclick="session_abrirFechar('registo_popUp', 'login_popUp', false)" style="color: #AF1917;">Faz o registo aqui!</span>.</p>

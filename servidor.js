@@ -46,17 +46,17 @@ const logging = (req, res, next) => {
 };
 
 // Tentar abrir fichieros prinicipais
-    try {
-        var navbar = fs.readFileSync('html/NavBar.html', 'utf-8');
-        var registo_login_popUp = fs.readFileSync('html/registo_login.html', 'utf-8');
-        var footer = fs.readFileSync('html/Footer.html', 'utf-8');
-       // var err_404 = fs.readFileSync('','utf-8');
-    }
-    // Caso nao consiga da log do erro
-    catch (error){
-        console.error("Erro ao ler ficheiros de conteudo.")
-        console.error(error)
-    }
+try {
+    var navbar = fs.readFileSync('html/NavBar.html', 'utf-8');
+    var registo_login_popUp = fs.readFileSync('html/registo_login.html', 'utf-8');
+    var footer = fs.readFileSync('html/Footer.html', 'utf-8');
+    // var err_404 = fs.readFileSync('','utf-8');
+}
+// Caso nao consiga da log do erro
+catch (error){
+    console.error("Erro ao ler ficheiros de conteudo.")
+    console.error(error)
+}
 
 // GUARDAR FORM NEWSLETTER 
 servidor.post("/processa_newsletter", logging, function (req, res) {
@@ -68,9 +68,9 @@ servidor.post("/processa_newsletter", logging, function (req, res) {
             res.redirect('back')
         }
         else {
-            console.log(err)
-            console.log('Erro ao executar pedido ao servidor')
-            res.redirect('/internal_error')
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
         }
     });
 
@@ -92,9 +92,9 @@ servidor.post("/processa_registo", logging, function (req, res) {
             res.redirect('back')
         }
         else {
-            console.log(err)
-            console.log('Erro ao executar pedido ao servidor')
-            res.redirect('/internal_error')
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
         }
     });
 });
@@ -102,24 +102,28 @@ servidor.post("/processa_registo", logging, function (req, res) {
 // PROCESSAR LOGIN 
 servidor.post("/processa_login", logging, function (req, res) {
     var query = '';
-    query += 'SELECT idCliente, nome, email, password FROM cliente WHERE email = "' + req.body.email + '" AND password = "' + sha(req.body.password) + '";';
+    query += 'SELECT idCliente, nome, email, password, num_tel FROM cliente WHERE email = "' + req.body.email + '" AND password = "' + sha(req.body.password) + '";';
 
     pool.query(query, function (err, result, fields) {
         if (!err) {
             if (result && result.length > 0) {
-                console.log(result)
-                req.session.login_ = null
-                req.session.idCliente = result[0].idCliente
-                return res.redirect('back')
+                if (req.query.via_voluntariado == "true"){
+                    return res.redirect("/processa_voluntariado_form?via_voluntario=true&nome=" + result[0].nome + "&email=" + result[0].email + "&num_tel=" + result[0].num_tel);
+                }else{
+                    console.log(result)
+                    req.session.login_ = null
+                    req.session.idCliente = result[0].idCliente
+                    return res.redirect('back')
+                };
             }else{
                 console.log('Sem resultados SQL')
-                return res.redirect('/internal_error')
+                return res.status(500).redirect('/InternalError');
             }
         }
         else {
-            console.log(err)
-            console.log('Erro ao executar pedido ao servidor')
-            return res.redirect('/internal_error')
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
         }
     });
 });
@@ -129,7 +133,7 @@ servidor.get("/log_out", logging, function (req, res) {
     req.session.destroy(function (err) {
         if (err) {
             console.log(err);
-            return res.redirect('/internal_error')
+            return res.status(500).redirect('/InternalError');
         }else{
             return res.redirect('/');
         };
@@ -208,8 +212,9 @@ servidor.get("/", logging, function (req, res) {
             };
         }
         else {
-            console.log(err)
-            console.log('Erro ao executar pedido ao servidor')
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
         }
         html += footer;
         html += '</body>\n</html>';
@@ -253,6 +258,92 @@ servidor.get("/voluntariado", logging, function (req, res) {
     html += navbar;
     if (req.session.idCliente){
         html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+        html += '</div></div></header>';
+    }else{
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '</div></div></header>';
+        html += registo_login_popUp;
+    }
+
+    if (req.session.login_) {
+        html += '<script> session_abrir("login_popUp"); </script>';
+    }
+
+    //HTML Content
+    html += content;
+
+    if (req.session.idCliente){
+        var query = 'SELECT nome, email, password, num_tel FROM cliente WHERE idCliente = ' + req.session.idCliente + ';';
+        pool.query(query, function (err, result, fields) {
+            if (!err){
+                if (result && result.length > 0) {
+                    console.log(result)
+                    html += '<script>document.getElementById("login_voluntariado_button").innerHTML = "SUBMETER COMO ' + (result[0].nome).toUpperCase() + '"</script>';
+                    var url = "'/processa_voluntariado_form?via_voluntario=true&nome=" + result[0].nome + "&email=" + result[0].email + "&num_tel=" + result[0].num_tel + "'";
+                    html += '<script>document.getElementById("login_voluntariado_button").onclick = null;</script>';
+                    html += '<script>document.getElementById("login_voluntariado_button").onclick = () => window.location = ' + url + ';</script>';
+                    html += footer;
+                    
+                    //HTML close
+                    html += '\n</body>\n</html>';
+                    return res.send(html);
+                }else{
+                    console.log('Sem resultados de Cliente');
+                    return res.status(500).redirect('/InternalError');
+                };
+            }else {
+                console.log(err);
+                console.log('Erro ao executar pedido ao servidor');
+                return res.status(500).redirect('/InternalError');
+            };
+        });
+    }else{
+        html += footer;
+
+        //HTML close
+        html += '\n</body>\n</html>';
+        return res.send(html);
+    };
+});
+
+servidor.get("/processa_voluntariado_form", logging, function (req, res) {
+    var query ='';
+    query = 'INSERT INTO voluntarios (nome, email, num_tel) VALUES ("' + req.query.nome + '", "' + req.query.email + '", "' + req.query.num_tel + '");';
+    console.log (req.query);
+    pool.query(query, function (err, result, fields) {
+        if (!err){
+            return res.status(200).redirect('/obrigado?motivo=voluntariado');
+        }else {
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
+        };
+    });
+});
+
+servidor.get("/obrigado", logging, function (req, res) {
+    //HTML head
+    var html = '';
+    html += '<!DOCTYPE html>\n<html lang=pt>\n<head>\n';
+    //HTML head meta
+    html += '<meta charset="utf-8">\n';
+    html += '<meta http-equiv="X-UA-Compatible" content="IE=edge">\n';
+    html += '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
+    //Title
+    html += '<title>Obrigado! | XTRA FOOD</title>\n';
+    html += '<link rel="stylesheet" href="css/fonts.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/navbar_css.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/footer_css.css" type="text/css">\n';
+    html += '<link rel="stylesheet" href="css/general_styles.css" type="text/css">\n';
+    html += '<link rel="icon" type="images/x-icon" href="/images/logos/main.png">';
+    html += '<script src="js/login.js"></script>\n';
+    //HTML close head
+    html += '</head>\n<body>';
+
+        //HTML NavBar
+    html += navbar;
+    if (req.session.idCliente){
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
          html += '</div></div></header>';
     }else{
         html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
@@ -264,19 +355,30 @@ servidor.get("/voluntariado", logging, function (req, res) {
         html += '<script> session_abrir("login_popUp"); </script>';
     }
 
-    html += registo_login_popUp;
+    console.log(req.query);
+
+    if (req.query.motivo == 'voluntariado'){
+        var pag_volta = '/voluntariado';
+        var pag_volta_nome = 'Voluntariado';
+        var obrigado_text = 'Obrigado pela submissão, foste registado como disponível para voluntariado! Iremos entrar em contacto assim que necessário para combinar todas as informações.';
+    }else if (req.query.motivo == 'doacao') {
+        var pag_volta = '/doacao';
+        var pag_volta_nome = 'Doação';
+        var obrigado_text = 'Obrigado pela tua doacao! Ficamos extremamente agradecidos pela tua contribuição nesta luta contra fome.';
+    }else if (req.query.motivo == 'newsletter') {
+        var pag_volta = '/';
+        var pag_volta_nome = 'Home';
+        var obrigado_text = 'Obrigado pelo teu registo na nossa newsletter! Iremos sempre enviar informações importantes sobre o que temos feito e sobre os nossos eventos.';
+    }
 
     //HTML Content
-    html += content;
+    html += '<div class="flex flex_center flex_collum wrapper content_wrapper"><div class="flex flex_center flex_collum info_block gap75"><div class="title">OBRIGADO!</div><div class="text">'+ obrigado_text +'</div><a href="' + pag_volta + '"><button class="button1_red button1_text_red" type="button">Voltar para: ' + pag_volta_nome + '</button></a></div></div>';
 
     html += footer;
 
     //HTML close
     html += '\n</body>\n</html>';
     res.send(html);
-});
-
-servidor.get("/voluntariado/submissao", logging, function (req, res) {
 });
 
 // PAGINA DOAÇÃO
@@ -335,6 +437,23 @@ servidor.get("/doacao", logging, function (req, res) {
     //HTML close
     html += '\n</body>\n</html>';
     res.send(html);
+});
+
+// GUARDAR FORM REGISTO
+servidor.post("/processa_doacao", logging, function (req, res) {
+    var query = '';
+    query += 'INSERT INTO doacao (nome, apelido, num_tel, email, quantidade, metodo, data) VALUES ("' + req.body.nome + '", "' + req.body.apelido + '", "' + req.body.num_tel + '", "' + req.body.email + '", "' + req.body.quantidade_donativo + '", "' + req.body.metodo_pagamento + '", "' + ((new Date().toISOString()).replace('T', ' ')).replace('Z', '') + '");';
+    console.log(query);
+
+    pool.query(query, function (err, result, fields) {
+        if (!err) {
+            return res.status(200).redirect('/obrigado?motivo=doacao');
+        } else {
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
+        };
+    });
 });
 
 // PAGINA SOBRE NÓS
@@ -516,7 +635,7 @@ servidor.get("/eventos", logging, function (req, res) {
                         html += '<div class="info_event_card flex flex_collum"><div class="descricao_event">' + result[i].descricao + '</div>';
                         html += '<div class="static_info flex flex_collum"><div class="localizacao_event flex"><img alt="icon" src="images/icons/Localização.png"><div class="localizacao">' + result[i].localizacao + '</div></div>';
                         if (result[i].voluntariar == 1){
-                            html += '<div class="vagas_event_alerta flex"><img alt="icon" src="images/icons/Alerta.png"><div class="vagas">Vagas abertas para voluntariado</div></div>';
+                            html += '<a href="/voluntariado"><div class="vagas_event_alerta flex"><img alt="icon" src="images/icons/Alerta.png"><div class="vagas">Vagas abertas para voluntariado</div></div></a>';
                         };
                         html += '</div></div></div>';
                     }else{
@@ -524,7 +643,7 @@ servidor.get("/eventos", logging, function (req, res) {
                         html += '<div class="info_event_card flex flex_collum"><div class="descricao_event">' + result[i].descricao + '</div>';
                         html += '<div class="static_info flex flex_collum"><div class="localizacao_event flex"><img alt="icon" src="images/icons/Localização.png"><div class="localizacao">' + result[i].localizacao + '</div></div>';
                         if (result[i].voluntariar == 1){
-                            html += '<div class="vagas_event_alerta flex"><img alt="icon" src="images/icons/Alerta.png"><div class="vagas">Vagas abertas para voluntariado</div></div>';
+                            html += '<a href="/voluntariado"><div class="vagas_event_alerta flex"><img alt="icon" src="images/icons/Alerta.png"><div class="vagas">Vagas abertas para voluntariado</div></div></a>';
                         };
                         html += '</div></div></div>';
                         html += '</div>';
@@ -535,8 +654,9 @@ servidor.get("/eventos", logging, function (req, res) {
             };
         }
         else {
-            console.log(err)
-            console.log('Erro ao executar pedido ao servidor')
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
         }
     html += '</div></div></div>';
     html += footer;
@@ -921,8 +1041,9 @@ servidor.get("/user", logging, function (req, res) {
                 };
             }
             else {
-                console.log(err)
-                console.log('Erro ao executar pedido ao servidor')
+                console.log(err);
+                console.log('Erro ao executar pedido ao servidor');
+                return res.status(500).redirect('/InternalError');
             }
             html += footer;
             html += '</body>\n</html>';
@@ -1065,8 +1186,9 @@ servidor.get("/user/history", logging, function (req, res) {
                 };
             }
             else {
-                console.log(err)
-                console.log('Erro ao executar pedido ao servidor')
+                console.log(err);
+                console.log('Erro ao executar pedido ao servidor');
+                return res.status(500).redirect('/InternalError');
             }
             html += footer;
             html += '</body>\n</html>';

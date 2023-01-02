@@ -8,16 +8,15 @@
             Toda a ajuda é bem vinda!
         </div>
     </div>
-    <form method="post" action="voluntariado/submissao" class="flex flex_center flex_collum form_1">
+    <form method="get" action="/processa_voluntariado_form" class="flex flex_center flex_collum form_1">
         <div class="title">COMO ME CANDIDATO?</div>
         <div class="flex flex_collum fomr1_inputs">
             <div class="flex flex_center form1_line">
-                <input id="primeiro_nome" class="form1_input" type="text" placeholder="Primeiro Nome">
-                <input id="apelido" class="form1_input" type="text" placeholder="Apelido">
+                <input name="nome" id="nome" class="form1_input fill_available" type="text" placeholder="Nome">
             </div>
             <div class="flex flex_center form1_line">
-                <input id="email" class="form1_input" type="email" placeholder="Email">
-                <input id="num_telemovel" class="form1_input" type="tel" placeholder="Número de telemóvel">
+                <input name="email" id="email" class="form1_input" type="email" placeholder="Email">
+                <input name="num_tel" id="num_tel" class="form1_input" type="tel" placeholder="Número de telemóvel">
             </div>
         </div>
         <button class="button1_red button1_text_red" type="submit">SUBMETER DISPONIBILIDADE</button>
@@ -26,6 +25,6 @@
             <div class="form1_separador2">OU</div>
             <div class="form1_separador1"></div>
         </div>
-        <div class="button1_red button1_text_red">LOGIN</div>
+        <div id="login_voluntariado_button" class="button1_red button1_text_red" onclick="session_abrir('login_popUp'); document.getElementById('login_form_tag').action='/processa_login?via_voluntariado=true'">LOGIN</div>
     </form>
 </div>

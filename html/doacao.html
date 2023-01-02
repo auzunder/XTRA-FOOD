@@ -8,28 +8,28 @@
             Toda a ajuda é bem vinda!
         </div>
     </div>
-    <form method="post" action="doacao/submissao" class="flex flex_center flex_collum form_1">
+    <form method="post" action="processa_doacao" class="flex flex_center flex_collum form_1">
         <div class="title2">Informação pessoal</div>
         <div class="flex flex_collum fomr1_inputs">
             <div class="flex flex_center form1_line">
-                <input id="primeiro_nome" class="form1_input" type="text" placeholder="Primeiro Nome">
-                <input id="apelido" class="form1_input" type="text" placeholder="Apelido">
+                <input name="nome" id="primeiro_nome" class="form1_input" type="text" placeholder="Primeiro Nome">
+                <input name="apelido" id="apelido" class="form1_input" type="text" placeholder="Apelido">
             </div>
             <div class="flex flex_center form1_line">
-                <input id="email" class="form1_input" type="email" placeholder="Email">
-                <input id="num_telemovel" class="form1_input" type="tel" placeholder="Número de telemóvel">
+                <input name="email" id="email" class="form1_input" type="email" placeholder="Email">
+                <input name="num_tel" id="num_telemovel" class="form1_input" type="tel" placeholder="Número de telemóvel">
             </div>
         </div>
         <div class="title2">Doação</div>
         <div class="flex flex_center form1_inline">
             <div>Quantidade:</div>
-            <input id="quantidade_donativo" class="form1_input" type="number" placeholder="0.00€">
+            <input name="quantidade_donativo" id="quantidade_donativo" class="form1_input" type="number" placeholder="0.00€">
         </div>
-        <div class="title2">Informação pessoal</div>
-        <div class="metodos_pagamento flex space_between">
-            <div class="metodo_pagamento flex"><input name="metodo_pagamento" type="radio"><img src="" alt="Multibanco"></div>
-            <div class="metodo_pagamento flex"><input name="metodo_pagamento" type="radio"><img src="" alt="Paypal"></div>
-            <div class="metodo_pagamento flex"><input name="metodo_pagamento" type="radio"><img src="" alt="MBWay"></div>
+        <div class="title2">Método</div>
+        <div class="metodos_pagamento flex space_between flex_center">
+            <div class="metodo_pagamento flex flex_center gap10"><input style="height: 25px;width: 25px;" name="metodo_pagamento" type="radio" value="Multibanco"><img src="/images/icons/MB.png" alt="Multibanco">Multibanco</div>
+            <div class="metodo_pagamento flex flex_center gap10"><input style="height: 25px;width: 25px;" name="metodo_pagamento" type="radio" value="Paypal"><img src="/images/icons/PayPal.png" alt="Paypal">Paypal</div>
+            <div class="metodo_pagamento flex flex_center gap10"><input style="height: 25px;width: 25px;" name="metodo_pagamento" type="radio" value="MBWay"><img style="mix-blend-mode: multiply;" src="/images/icons/MBWay.png" alt="MBWay">MBWay</div>
         </div>
         <button class="button1_red button1_text_red" type="submit">CONTINUAR</button>
     </form>
