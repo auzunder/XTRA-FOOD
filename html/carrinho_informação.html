@@ -6,62 +6,40 @@
         <img src="/../images/icons/Seta.svg" alt="seta icon">
         <div class="title2 faded">FINALIZAÇÂO</div>
     </div>
-    <div class="flex flex_center flex_collum gap75 produtos">
-        <form method="post" action="voluntariado/submissao" class="flex flex_center flex_collum form_1">
+    <form method="get" action="/loja/carrinho/finalizacao" class="flex flex_center flex_collum gap75 produtos">
+        <div class="flex flex_center flex_collum form_1">
+            <input style="display: none;" id="quantidade_doacao_input" name="quantidade_doacao">
             <div class="flex flex_collum fomr1_inputs flex_center">
                 <div class="title2">Informação do destinatário</div>
                 <div class="flex flex_center form1_line info_compra">
-                    <input id="primeiro_nome" class="form1_input" type="text" placeholder="Primeiro Nome">
-                    <input id="apelido" class="form1_input" type="text" placeholder="Apelido">
+                    <input name="nome" id="nome" class="form1_input fill_available" type="text" placeholder="Nome">
                 </div>
                 <div class="flex flex_center form1_line info_compra">
-                    <input id="primeiro_nome" class="form1_input" type="email" placeholder="Email">
-                    <input id="apelido" class="form1_input" type="tel" placeholder="Telemóvel">
+                    <input name="email" id="email" class="form1_input" type="email" placeholder="Email">
+                    <input name="num_tel" id="num_tel" class="form1_input" type="tel" placeholder="Telemóvel">
                 </div>
                 <div class="title2">Informação de envio</div>
-                <input id="email" class="form1_input info_compra" type="text" placeholder="Endereço">
+                <input name="endereco" id="endereco" class="form1_input info_compra" type="text" placeholder="Endereço">
                 <div class="flex flex_center gap10 form1_line info_compra">
-                    <input id="num_telemovel" class="form1_input info_compra" type="num" maxlength="4" placeholder="Codigo">
+                    <input name="codigo_postal_1" id="codigo_postal_1" class="form1_input info_compra" type="num" maxlength="4" placeholder="Codigo">
                     <div>-</div>
-                    <input id="num_telemovel" class="form1_input" type="num" maxlength="3" placeholder="Postal">
+                    <input name="codigo_postal_2" id="codigo_postal_2" class="form1_input" type="num" maxlength="3" placeholder="Postal">
                 </div>
-                <input id="email" class="form1_input info_compra" type="text" placeholder="Cidade">
-                <input id="num_telemovel" class="form1_input info_compra" type="tel" placeholder="Número de Telemóvel">
+                <input name="cidade" id="cidade" class="form1_input info_compra" type="text" placeholder="Cidade">
                 <div class="title2">Método de Pagamento</div>
                 <div class="flex flex_center form1_line">
                     <div class="flex flex_center form1_inline">
-                        <input id="ser_parceiro" class="radio_button" name="servicos" type="radio">
+                        <input value="MBWay" style="width: 25px;height: 25px;" id="MBWay" class="radio_button" name="metodo" type="radio">
                         <div>MBWay</div>
                     </div>
                     <div class="flex flex_center form1_inline">
-                        <input id="ser_afiliado" class="radio_button" name="servicos" type="radio">
+                        <input value="Multibanco" style="width: 25px;height: 25px;" id="Multibanco" class="radio_button" name="metodo" type="radio">
                         <div>Multibanco</div>
                     </div>
                     <div class="flex flex_center form1_inline">
-                        <input id="ser_afiliado" class="radio_button" name="servicos" type="radio">
+                        <input value="Paypal" style="width: 25px;height: 25px;" id="Paypal" class="radio_button" name="metodo" type="radio">
                         <div>Paypal</div>
                     </div>
                 </div>
             </div>
-        </form>
-        <div class="flex flex_collum preco_total">
-            <div class="separador"></div>
-            <div class="flex space_between total">
-                <div>TOTAL</div>
-                <div>5€</div>
-            </div>
         </div>
-        <div class="botoes flex flex_center space_between">
-            <a>
-                <div class="button4_grey button4_text_grey" onclick="javascript:history.back()">
-                    Voltar
-                </div>
-            </a>
-            <a href="/loja/carrinho/finalizacao">
-                <div class="button4_red button4_text_red">
-                    Continuar
-                </div>
-            </a>
-        </div>
-    </div>
-</div>

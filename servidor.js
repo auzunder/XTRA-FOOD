@@ -415,7 +415,11 @@ servidor.get("/obrigado", logging, function (req, res) {
         var pag_volta = '/parceiros';
         var pag_volta_nome = 'Parceiros';
         var obrigado_text = 'Obrigado pelo teu pedido! Assim que possível, iremos rever a sua aplicação e entraremos em contacto caso seja aceite.';
-    }
+    }else if (req.query.motivo == 'encomenda') {
+        var pag_volta = '/';
+        var pag_volta_nome = 'Home';
+        var obrigado_text = 'Obrigado pela tua encomenda! Assim que possível, iremos processar o pedido para ser enviado o mais depressa possível.';
+    };
 
     //HTML Content
     html += '<div class="flex flex_center flex_collum wrapper content_wrapper"><div class="flex flex_center flex_collum info_block gap75"><div class="title">OBRIGADO!</div><div class="text">'+ obrigado_text +'</div><a href="' + pag_volta + '"><button class="button1_red button1_text_red" type="button">Voltar para: ' + pag_volta_nome + '</button></a></div></div>';
@@ -1115,7 +1119,7 @@ servidor.get("/loja/carrinho", logging, function (req, res) {
     //HTML NavBar
     html += navbar;
     if (req.session.idCliente){
-        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="/images/navbar icons/contaIcon.png" alt="icone conta"></a>';
          html += '</div></div></header>';
     }else{
         html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="/images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
@@ -1231,7 +1235,8 @@ servidor.get("/loja/carrinho", logging, function (req, res) {
                         html += '\n            <div class="separador"></div>';
                         html += '\n            <div class="flex space_between total">';
                         html += '\n                <div>TOTAL</div>';
-                        html += '\n                <div>' + total_carrinho + ',00€</div>';
+                        html += '\n                <div id=total_carrinho_HTML>' + total_carrinho + ',00€</div>';
+                        html += '\n                <input style="display: none;" id="total_carrinho_input" name="total_carrinho" value=' + total_carrinho + '>';
                         html += '\n            </div>';
                         html += '\n        </div>';
                         html += '\n        <div class="botoes flex flex_center space_between">';
@@ -1248,7 +1253,7 @@ servidor.get("/loja/carrinho", logging, function (req, res) {
                         html += '\n            </a>';
                         html += '\n        </div>';
                         
-                        html += '\n    </form>\n   </div>';
+                        html += '\n    </form>\n   </div>\n</div>';
                         html += footer_loja;
                         html += '\n</body>\n</html>';
                         return res.send(html);
@@ -1283,6 +1288,7 @@ servidor.get("/loja/carrinho", logging, function (req, res) {
 
 // CARRINHO
 servidor.get("/loja/carrinho/informacao", logging, function (req, res) {
+    console.log(req.query);
     // Tentar abrir ficheiro
     try {
         var content = fs.readFileSync('html/carrinho_informação.html', 'utf-8');
@@ -1321,10 +1327,10 @@ servidor.get("/loja/carrinho/informacao", logging, function (req, res) {
     //HTML NavBar
     html += navbar;
     if (req.session.idCliente){
-        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="/images/navbar icons/contaIcon.png" alt="icone conta"></a>';
          html += '</div></div></header>';
     }else{
-        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="/images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
         html += '</div></div></header>';
         html += registo_login_popUp;
     }
@@ -1336,15 +1342,104 @@ servidor.get("/loja/carrinho/informacao", logging, function (req, res) {
     //HTML Content
     html += content;
 
-    html += footer_loja;
+    if (req.session.carrinho) {
+        if (req.session.idCliente){
+            var query ='';
+            query += 'SELECT nome, email, morada, codigo_postal, distrito, num_tel FROM cliente WHERE idCliente = ' + req.session.idCliente + ';';
+            
+            pool.query(query, function (err, result, fields) {
+                if (!err) {
+                    if (result && result.length > 0) {
+                        html += '        <div class="flex flex_collum preco_total">';
+                        html += '            <div class="separador"></div>';
+                        html += '            <div class="flex space_between total">';
+                        html += '                <div>TOTAL</div>';
+                        html += '                <div>' + (parseInt(req.query.total_carrinho) + parseInt(req.query.quantidade_donate)).toString() + ',00€</div>';
+                        html += '            </div>';
+                        html += '        </div>';
+                        html += '        <div class="botoes flex flex_center space_between">';
+                        html += '            <a>';
+                        html += '                <div class="button4_grey button4_text_grey" onclick="javascript:history.back()">';
+                        html += '                    Voltar';
+                        html += '                </div>';
+                        html += '            </a>';
+                        html += '            <a href="/loja/carrinho/finalizacao">';
+                        html += '                <button type=submit class="button4_red button4_text_red">';
+                        html += '                    Continuar';
+                        html += '                </button>';
+                        html += '            </a>';
+                        html += '        </div>';
+                        html += '    </form>';
+                        html += '</div>';
 
-    //HTML close
-    html += '\n</body>\n</html>';
-    res.send(html);
+                        html += '<script>';
+
+                        html += 'document.getElementById("quantidade_doacao_input").value = "' + req.query.quantidade_donate + '";';
+                        html += 'document.getElementById("nome").value = "' + result[0].nome + '";';
+                        html += 'document.getElementById("email").value = "' + result[0].email + '";';
+                        html += 'document.getElementById("num_tel").value = "' + result[0].num_tel + '";';
+                        html += 'document.getElementById("endereco").value = "' + result[0].morada + '";';
+                        html += 'document.getElementById("codigo_postal_1").value = "' + (result[0].codigo_postal).split('-')[0] + '";';
+                        html += 'document.getElementById("codigo_postal_2").value = "' + (result[0].codigo_postal).split('-')[1] + '";';
+                        html += 'document.getElementById("cidade").value = "' + result[0].distrito + '";';
+
+                        html += '</script>';
+
+                        html += footer_loja;
+                        html += '\n</body>\n</html>';
+                        return res.send(html);
+                    }else {
+                        console.log('Não foi possível obter resultados')
+                        return res.status(500).redirect('/ProdutoNaoEncontrado');
+                    };
+                } else {
+                    console.log(err);
+                    console.log('Erro ao executar pedido ao servidor');
+                    return res.status(500).redirect('/InternalError');
+                };
+            });
+        }else{
+            html += '        <div class="flex flex_collum preco_total">';
+            html += '            <div class="separador"></div>';
+            html += '            <div class="flex space_between total">';
+            html += '                <div>TOTAL</div>';
+            html += '                <div>' + (parseInt(req.query.total_carrinho) + parseInt(req.query.quantidade_donate)).toString() + ',00€</div>';
+            html += '            </div>';
+            html += '        </div>';
+            html += '        <div class="botoes flex flex_center space_between">';
+            html += '            <a>';
+            html += '                <div class="button4_grey button4_text_grey" onclick="javascript:history.back()">';
+            html += '                    Voltar';
+            html += '                </div>';
+            html += '            </a>';
+            html += '            <a href="/loja/carrinho/finalizacao">';
+            html += '                <button type=submit class="button4_red button4_text_red">';
+            html += '                    Continuar';
+            html += '                </button>';
+            html += '            </a>';
+            html += '        </div>';
+            html += '    </form>';
+            html += '</div>';
+
+            html += '<script>';
+
+            html += 'document.getElementById("quantidade_doacao_input").value = "' + req.query.quantidade_donate + '";';
+
+            html += '</script>';
+
+            html += footer_loja;
+            html += '\n</body>\n</html>';
+            return res.send(html);
+        };
+    } else {
+        return res.redirect("/loja/carrinho");
+    };
 });
 
 // CARRINHO
 servidor.get("/loja/carrinho/finalizacao", logging, function (req, res) {
+    console.log(req.query);
+
     // Tentar abrir ficheiro
     try {
         var content = fs.readFileSync('html/carrinho_finalização.html', 'utf-8');
@@ -1383,10 +1478,10 @@ servidor.get("/loja/carrinho/finalizacao", logging, function (req, res) {
     //HTML NavBar
     html += navbar;
     if (req.session.idCliente){
-        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="/images/navbar icons/contaIcon.png" alt="icone conta"></a>';
          html += '</div></div></header>';
     }else{
-        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="/images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
         html += '</div></div></header>';
         html += registo_login_popUp;
     }
@@ -1398,11 +1493,273 @@ servidor.get("/loja/carrinho/finalizacao", logging, function (req, res) {
     //HTML Content
     html += content;
 
-    html += footer_loja;
+    if (req.session.carrinho) {
+        // filtrar apenas os álbuns que, no array carrinho, têm uma quantidade associada
+        var listaCarrinho = new Array();
+        Object.entries(req.session.carrinho).forEach(([key, value]) => {
+            console.log(key, value);
+            if (value != null){
+                listaCarrinho.push(parseInt(key));
+            };
+        });
+        
+        sql_string_where_clause = '(';
+        sql_string_where_clause += listaCarrinho.toString();
+        sql_string_where_clause += ')';
+        
+        
+        console.log(listaCarrinho, sql_string_where_clause);
+        if (sql_string_where_clause != '()'){
 
-    //HTML close
-    html += '\n</body>\n</html>';
-    res.send(html);
+            var query ='';
+            query += 'SELECT idProduto_final, idProduto, idCores, idTamanhos, stock, nome, preco, Cor, tamanho FROM produto_tamanhoecor INNER JOIN produto USING (idProduto) INNER JOIN cores USING (idCores) INNER JOIN tamanhos USING (idTamanhos) WHERE idProduto_final IN ' 
+            + sql_string_where_clause + ';';
+
+            var total_carrinho = 0;
+            
+            pool.query(query, function (err, result, fields) {
+                if (!err) {
+                    if (result && result.length > 0) {
+                        console.log(result)
+                        html += '    <form method="post" action="/loja/carrinho/finalizacao/submissao" class="flex flex_center flex_collum gap75 produtos">';
+                        html += '<div class="flex flex_center flex_collum gap25 listagem_produtos">';
+                        result.forEach(produto => {
+                            html += '\n            <div class="flex flex_center card_produto">';
+                            html += '\n                <img class="produto_img" alt="imagem de produto - Ultrafood" src="/images/produtos/' + produto.idProduto + '.jpg">';
+                            html += '\n                <div class="produto_info flex flex_center">';
+                            html += '\n                    <div class="flex flex_collum space_between info">';
+                            html += '\n                        <div class="title2 color_red">' + produto.nome + '</div>';
+                            html += '\n                        <div class="flex gap10">';
+                            if (produto.idCores == 1) {
+                                var class_color = 'red';
+                            } else if (produto.idCores == 2) {
+                                var class_color = 'yellow';
+                            } else if (produto.idCores == 3) {
+                                var class_color = 'white';
+                            }
+                            html += '\n                            <div class="title4"> Cor </div>';
+                            html += '\n                            <div class="cor_selecionada '+ class_color +'"></div>';
+                            html += '\n                        </div>';
+                            html += '\n                        <div class="flex gap10">';
+                            html += '\n                            <div class="title4"> Tamanho </div>';
+                            html += '\n                            <div class="tamanho_selecionado">' + produto.tamanho + '</div>';
+                            html += '\n                        </div>';
+                            html += '\n                        <div class="flex gap10">';
+                            html += '\n                            <div class="title4">Preço:</div>';
+                            html += '\n                            <div class="text2_left">' + produto.preco + ',00€</div>';
+                            html += '\n                        </div>';
+                            html += '\n                        <div class="flex gap10">';
+                            html += '\n                            <div class="title4">Quantidade:</div>';
+                            html += '\n                            <div class="text2_left">' + req.session.carrinho[produto.idProduto_final] + '</div>';
+                            html += '\n                        </div>';
+                            html += '\n                        <div class="flex flex_collum gap5">';
+                            if (produto.stock >= req.session.carrinho[produto.idProduto_final]) {
+                                html += '\n                            <div class="disponibilidade flex">';
+                                html += '\n                                <div class="disponibilidade_circle"></div>';
+                                html += '\n                                <div class="text2_left">Disponível Online</div>';
+                                html += '\n                            </div>';
+                            } else{
+                                html += '\n                            <div class="disponibilidade flex">';
+                                html += '\n                                <div class="indisponibilidade_circle"></div>';
+                                html += '\n                                <div class="text2_left">Indisponível Online</div>';
+                                html += '\n                            </div>';
+                            };
+                            html += '\n                        </div>';
+                            html += '\n                    </div>';
+                            html += '\n                </div>';
+                            html += '\n            </div>';
+                            total_carrinho += produto.preco * req.session.carrinho[produto.idProduto_final];
+                        });
+                        total_carrinho += parseInt(req.query.quantidade_doacao);
+                        
+                        html += '</div>';
+
+                        // INPUTS INVISIVEIS
+                        html += '<input value="' + req.query.quantidade_doacao + '" name="quantidade_doacao" style="display: none;">';
+                        html += '<input value="' + req.query.nome + '" name="nome" style="display: none;">';
+                        html += '<input value="' + req.query.email + '" name="email" style="display: none;">';
+                        html += '<input value="' + req.query.num_tel + '" name="num_tel" style="display: none;">';
+                        html += '<input value="' + req.query.endereco + '" name="endereco" style="display: none;">';
+                        html += '<input value="' + req.query.codigo_postal_1 + '" name="codigo_postal_1" style="display: none;">';
+                        html += '<input value="' + req.query.codigo_postal_2 + '" name="codigo_postal_2" style="display: none;">';
+                        html += '<input value="' + req.query.cidade + '" name="cidade" style="display: none;">';
+                        html += '<input value="' + req.query.metodo + '" name="metodo" style="display: none;">';
+                        
+                        // Donation
+                        html += '\n        <div class="flex card_produto">';
+                        html += '\n            <div class="flex gap10 doacao_card">';
+                        html += '\n                <div class="flex flex_collum gap10 doacao_info">';
+                        html += '\n                    <div class="title2 color_red">Doação opcional</div>';
+                        html += '\n                    <div class="text2_left">O donativo é uma ajuda direta a todas as associações envolvidas e o valor é totalmente de eleição própria.</div>';
+                        html += '\n                    <div class="flex gap10 escolha_doacao">';
+                        html += '\n                        <div class="title4">Quantidade </div>';
+                        html += '\n                        <div class="text2_left">' + req.query.quantidade_doacao + ',00€</div>';
+                        html += '\n                    </div>';
+                        html += '\n                </div>';
+                        html += '\n            </div>';
+                        html += '\n        </div>';
+                        
+                        // INFO REMETENTE
+                        html += '\n        <div class="revisao_morada">';
+                        html += '\n            <div class="flex flex_collum gap10">';
+                        html += '\n                <div class="title2 color_red">Informações de Envio</div>';
+                        html += '\n                <div id="revisao_morada_nome" class="text2_left">';
+                        html += '\n                    ' + req.query.nome;
+                        html += '\n                </div>';
+                        html += '\n                <div id="revisao_morada_numero" class="text2_left">';
+                        html += '\n                    ' + req.query.num_tel;
+                        html += '\n                </div>';
+                        html += '\n                <div id="revisao_morada_morada" class="text2_left">';
+                        html += '\n                    ' + req.query.endereco;
+                        html += '\n                </div>';
+                        html += '\n                <div id="revisao_morada_cod_postal_cidade" class="text2_left">';
+                        html += '\n                    ' + req.query.codigo_postal_1 + '-' + req.query.codigo_postal_2 + ' ' + req.query.cidade;
+                        html += '\n                </div>';
+                        html += '\n                <div id="revisao_morada_metodo" class="text2_left">';
+                        html += '\n                    Método: ' + req.query.metodo ;
+                        html += '\n                </div>';
+                        html += '\n            </div>';
+                        html += '\n        </div>';
+
+                        // TOTAL
+                        html += '\n        <div class="flex flex_collum preco_total">';
+                        html += '\n            <div class="separador"></div>';
+                        html += '\n            <div class="flex space_between total">';
+                        html += '\n                <div>TOTAL</div>';
+                        html += '\n                <div id=total_carrinho_HTML>' + total_carrinho + ',00€</div>';
+                        html += '\n                <input style="display: none;" id="total_carrinho_input" name="total_carrinho" value=' + total_carrinho + '>';
+                        html += '\n            </div>';
+                        html += '\n        </div>';
+
+                        html += '\n        <div class="botoes flex flex_center space_between">';
+                        html += '\n            <a>';
+                        html += '\n                <div class="button4_grey button4_text_grey" onclick="javascript:history.back()">';
+                        html += '\n                    Voltar';
+                        html += '\n                </div>';
+                        html += '\n            </a>';
+                        html += '\n            <a>';
+                        html += '\n                <button type=submit class="button4_red button4_text_red">';
+                        html += '\n                    Continuar';
+                        html += '\n                </button>';
+                        html += '\n            </a>';
+                        html += '\n        </div>';
+                        
+                        html += '\n    </form>\n   </div>\n</div>';
+                        html += footer_loja;
+                        html += '\n</body>\n</html>';
+                        return res.send(html);
+                    }else {
+                        console.log('Não foi possível obter resultados')
+                        return res.status(500).redirect('/ProdutoNaoEncontrado');
+                    };
+                } else {
+                    console.log(err);
+                    console.log('Erro ao executar pedido ao servidor');
+                    return res.status(500).redirect('/InternalError');
+                };
+            });
+        }else{
+            html += '<div class="text_left"> O seu carrinho encontra-se vazio</div>';
+            html += '<div class="text_left"> Visite a nossa loja e veja todos os produtos disponíveis.</div>';
+            html += '</div></div>';
+            html += footer_loja;
+            html += '\n</body>\n</html>';
+            return res.send(html);
+
+        };
+    } else {
+        html += '<div class="text_left"> O seu carrinho encontra-se vazio</div>';
+        html += '<div class="text_left"> Visite a nossa loja e veja todos os produtos disponíveis.</div>';
+        html += '</div></div>';
+        html += footer_loja;
+        html += '\n</body>\n</html>';
+        return res.send(html);
+    };
+});
+
+//INSERT ENCOMENDA
+servidor.post("/loja/carrinho/finalizacao/submissao", logging, function (req, res) {
+    console.log(req.body);
+    var query ='';
+    if (req.session.idCliente) {
+        query += 'INSERT INTO encomenda (data, morada, codigo_postal, cidade, num_tel, idCliente) VALUES ("' 
+        + ((new Date().toISOString()).replace('T', ' ')).replace('Z', '') + '","' 
+        + req.body.endereco + '","' 
+        + req.body.codigo_postal_1 + req.body.codigo_postal_2 + '","' 
+        + req.body.cidade + '","' 
+        + req.body.num_tel + '","' 
+        + req.session.idCliente + '");';
+    } else{
+        query += 'INSERT INTO encomenda (data, morada, codigo_postal, cidade, num_tel, idCliente) VALUES ("' 
+        + ((new Date().toISOString()).replace('T', ' ')).replace('Z', '') + '","' 
+        + req.body.endereco + '","' 
+        + req.body.codigo_postal_1 + req.body.codigo_postal_2 + '","' 
+        + req.body.cidade + '","' 
+        + req.body.num_tel + '", null );';
+    };
+
+    if (req.body.quantidade_doacao != '0') {
+        if ((req.body.nome).split(' ')[1]){
+            query += 'INSERT INTO doacao (nome, apelido, num_tel, email, quantidade, metodo, data) VALUES ("' + req.body.nome + '", "' + req.body.apelido + '", "' + req.body.num_tel + '", "' + req.body.email + '", "' + req.body.quantidade_doacao + '", "' + req.body.metodo + '", "' + ((new Date().toISOString()).replace('T', ' ')).replace('Z', '') + '");';
+        } else{
+            query += 'INSERT INTO doacao (nome, num_tel, email, quantidade, metodo, data) VALUES ("' + req.body.nome + '", "' + req.body.num_tel + '", "' + req.body.email + '", "' + req.body.quantidade_doacao + '", "' + req.body.metodo + '", "' + ((new Date().toISOString()).replace('T', ' ')).replace('Z', '') + '");';
+        };
+    }
+
+    console.log(query);
+    pool.query(query, function (err, result, fields) {
+        if (!err) {
+            console.log('Nova encomenda!');
+            return res.status(200).redirect('/loja/carrinho/finalizacao/ultima_encoenda')
+        } else {
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
+        };
+    });
+});
+
+//SELECT ID ENCOMENDA
+servidor.get("/loja/carrinho/finalizacao/ultima_encoenda", logging, function (req, res) {
+    var query ='';
+    query += 'SELECT idEncomenda FROM encomenda ORDER BY idEncomenda DESC;';
+    pool.query(query, function (err, result, fields) {
+        if (!err) {
+            console.log('Ultima encomenda!');
+            return res.status(200).redirect('submissao_produtos?encomenda=' + result[0].idEncomenda)
+        } else {
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
+        };
+    });
+});
+
+//INSERT PRODUTO_ENCOMENDA
+servidor.get("/loja/carrinho/finalizacao/submissao_produtos", logging, function (req, res) {
+    if ( req.query){
+        var query ='';
+    
+        Object.entries(req.session.carrinho).forEach(([key, value]) => {
+            if (value != null){
+                query += 'INSERT INTO encomenda_produto (idEncomenda, idProduto_final, quantidade) VALUES ("' + req.query.encomenda + '", "' + parseInt(key) + '", "' + parseInt(value) + '");';
+            };
+        });
+    
+        pool.query(query, function (err, result, fields) {
+            if (!err) {
+                console.log('Nova encomenda_produto!');
+                return res.status(200).redirect('/obrigado?motivo=encomenda')
+            } else {
+                console.log(err);
+                console.log('Erro ao executar pedido ao servidor');
+                return res.status(500).redirect('/InternalError');
+            };
+        });
+    } else{
+        console.log('Sem id se encomenda');
+        return res.status(500).redirect('/InternalError');
+    };
 });
 
 // USER ACCOUNT
