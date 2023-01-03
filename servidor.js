@@ -5,6 +5,7 @@ const mysql = require("mysql2");
 const sha = require('sha1');
 
 const fileUpload = require("express-fileupload");
+const { validateHeaderName } = require('http');
 
 const servidor = express();
 var porta = 8080;
@@ -133,6 +134,8 @@ servidor.get("/log_out", logging, function (req, res) {
     req.session.destroy(function (err) {
         if (err) {
             console.log(err);
+            req.session.carrinho = [];
+            console.log('Carrinho Limpo!');
             return res.status(500).redirect('/InternalError');
         }else{
             return res.redirect('/');
@@ -142,6 +145,8 @@ servidor.get("/log_out", logging, function (req, res) {
 
 // PAGINA INICIAL
 servidor.get("/", logging, function (req, res) {
+
+
     // Tentar abrir ficheiro
     try {
         var home_content = fs.readFileSync('html/home.html', 'utf-8');
@@ -194,18 +199,49 @@ servidor.get("/", logging, function (req, res) {
     html += home_content;
 
     var query ='';
-    query += 'SELECT cartaz_img FROM evento ORDER BY data asc;';
+    query += 'SELECT idEvento, cartaz_img FROM evento ORDER BY data asc;';
+    query += 'SELECT idProduto, nome, preco FROM produto;';
+
     pool.query(query, function (err, result, fields) {
         if (!err) {
             if (result && result.length > 0) {
                 //console.log(result)
                 html += '\n<script>';
-                for (var index in result){
-                    html += 'document.getElementById("cartaz_' + (parseInt(index)+1).toString() + '").src = "images/eventos/' + (parseInt(index)+1).toString() + '.jpg";\n';
-                    if (index > 1){
+                for (var index_evento in result[0]){
+                    html += 'document.getElementById("cartaz_' + (parseInt(index_evento)+1).toString() + '").src = "images/eventos/' + result[0][index_evento].cartaz_img + '";\n';
+                    if (index_evento > 2){
                         break;
                     }
                 }
+                var produto_index = 0;
+                var lojaInnerHTML = '';
+                for (var produto of result[1]){
+                    lojaInnerHTML += '<a href="/loja/produto?id='+ produto.idProduto +'">';
+                    lojaInnerHTML += '  <div class="item_loja_card flex flex_center flex_collum">';
+                    lojaInnerHTML += '      <img class="item_loja_img" alt="imagem de produto em loja" src="/images/produtos/'+ produto.idProduto +'.jpg">';
+                    lojaInnerHTML += '      <div class="item_loja flex flex_collum">';
+                    lojaInnerHTML += '          <h1 class="nome_item">'+ produto.nome +'</h1>';
+                    lojaInnerHTML += '          <div class="preco flex flex_center">';
+                    lojaInnerHTML += '              <div class="preco_text">Preço:</div>';
+                    lojaInnerHTML += '              <div class="preco_unitario">'+ produto.preco +'.00€</div>';
+                    lojaInnerHTML += '          </div>';
+                    /* Disponibilidade aqui (?) */
+                    //lojaInnerHTML += '          <div class="disponibilidade flex flex_center">';
+                    //lojaInnerHTML += '              <div class="disponibilidade_circle"></div>';
+                    //lojaInnerHTML += '              <div class="disponibilidade_text">Disponível</div>';
+                    //lojaInnerHTML += '          </div>';
+                    lojaInnerHTML += '      </div>';
+                    lojaInnerHTML += '  </div>';
+                    lojaInnerHTML += '</a>';
+                    
+                    produto_index += 1;
+                    if (produto_index > 2){
+                        html += 'document.getElementById("loja_preview").innerHTML = ' + "'" + lojaInnerHTML + "'" + ';\n';
+                        break;
+                    };
+                };
+
+
                 html += '\n</script>\n';
             }else {
                 console.log('Não foi possível obter resultados')
@@ -224,6 +260,8 @@ servidor.get("/", logging, function (req, res) {
 
 // PAGINA VOLUNTARIADO
 servidor.get("/voluntariado", logging, function (req, res) {
+
+
     // Tentar abrir ficheiro
     try {
         var content = fs.readFileSync('html/voluntariado.html', 'utf-8');
@@ -306,6 +344,7 @@ servidor.get("/voluntariado", logging, function (req, res) {
     };
 });
 
+// PROCESSAR FORMULÁRIO DE VOLUNTARIADO
 servidor.get("/processa_voluntariado_form", logging, function (req, res) {
     var query ='';
     query = 'INSERT INTO voluntarios (nome, email, num_tel) VALUES ("' + req.query.nome + '", "' + req.query.email + '", "' + req.query.num_tel + '");';
@@ -321,7 +360,10 @@ servidor.get("/processa_voluntariado_form", logging, function (req, res) {
     });
 });
 
+// PÁGINDA DE AGRADECIMENTOS
 servidor.get("/obrigado", logging, function (req, res) {
+
+    
     //HTML head
     var html = '';
     html += '<!DOCTYPE html>\n<html lang=pt>\n<head>\n';
@@ -387,6 +429,8 @@ servidor.get("/obrigado", logging, function (req, res) {
 
 // PAGINA DOAÇÃO
 servidor.get("/doacao", logging, function (req, res) {
+
+
     // Tentar abrir ficheiro
     try {
         var content = fs.readFileSync('html/doacao.html', 'utf-8');
@@ -462,6 +506,8 @@ servidor.post("/processa_doacao", logging, function (req, res) {
 
 // PAGINA SOBRE NÓS
 servidor.get("/sobre_nos", logging, function (req, res) {
+
+
     // Tentar abrir ficheiro
     try {
         var content = fs.readFileSync('html/sobre_nos.html', 'utf-8');
@@ -520,6 +566,8 @@ servidor.get("/sobre_nos", logging, function (req, res) {
 
 // PAGINA SERVIÇOS
 servidor.get("/parceiros", logging, function (req, res) {
+
+
     // Tentar abrir ficheiro
     try {
         var content = fs.readFileSync('html/servicos.html', 'utf-8');
@@ -605,6 +653,8 @@ servidor.post("/processa_parceiros", logging, function (req, res) {
 
 // PAGINA EVENTOS
 servidor.get("/eventos", logging, function (req, res) {
+
+
     // Tentar abrir ficheiro
     try {
         var content = fs.readFileSync('html/eventos.html', 'utf-8');
@@ -698,6 +748,8 @@ servidor.get("/eventos", logging, function (req, res) {
 
 // PAGINA LOJA
 servidor.get("/loja", logging, function (req, res) {
+
+
     // Tentar abrir ficheiro
     try {
         var content = fs.readFileSync('html/loja.html', 'utf-8');
@@ -717,7 +769,7 @@ servidor.get("/loja", logging, function (req, res) {
     html += '<meta http-equiv="X-UA-Compatible" content="IE=edge">\n';
     html += '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
     //Title
-    html += '<title>Eventos | XTRA FOOD</title>\n';
+    html += '<title>Loja | XTRA FOOD</title>\n';
     html += '<link rel="stylesheet" href="css/fonts.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/navbar_css.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="css/footer_css.css" type="text/css">\n';
@@ -747,20 +799,71 @@ servidor.get("/loja", logging, function (req, res) {
     //HTML Content
     html += content;
 
-    html += footer;
+    var query ='';
+    query += 'SELECT idProduto, nome, descricao, detalhes, categoria, preco FROM produto;';
 
-    //HTML close
-    html += '\n</body>\n</html>';
-    res.send(html);
+    pool.query(query, function (err, result, fields) {
+        if (!err) {
+            if (result && result.length > 0) {
+                html += '\n            <div class="loja_cards flex flex_collum">';
+                html += '\n                <div class="loja_cards_line flex">';
+                var produtos_na_linha = 0;
+                for (const produto of result) {
+                    //console.log(produto)
+                    if (produtos_na_linha == 3){
+                        html += '\n                </div>';
+                        html += '\n                <div class="loja_cards_line flex">';
+                        
+                        produtos_na_linha = 0;
+                    };
+                    html += '\n                     <div class="item_loja_card flex flex_center flex_collum">';
+                    html += '\n                        <img class="item_loja_img" alt="imagem de produto - Tote Bag" src="/images/produtos/' + produto.idProduto + '.jpg">';
+                    html += '\n                        <div class="item_loja flex flex_collum">';
+                    html += '\n                            <h1 class="nome_item">' + produto.nome + '</h1>';
+                    html += '\n                            <div class="preco flex flex_center">';
+                    html += '\n                                <div class="preco_text">Preço:</div>';
+                    html += '\n                                <div class="preco_unitario">' + produto.preco + ',00€</div>';
+                    html += '\n                            </div>';
+                    html += '\n                            <a href="/loja/produto?id=' + produto.idProduto + '"><div class="addicionar_carrinho">Ver Produto</div></a>';
+                    html += '\n                            <div class="disponibilidade flex flex_center">';
+                    html += '\n                                <div class="disponibilidade_circle"></div>';
+                    html += '\n                                <div class="disponibilidade_text">Disponível</div>';
+                    html += '\n                            </div>';
+                    html += '\n                        </div>';
+                    html += '\n                    </div>';
+                    produtos_na_linha += 1;
+                };
+                html += '\n                </div>';
+
+                html += '\n            </div>';
+                html += '\n        </div>';
+                html += '\n    </div>';
+                html += '\n</div>';
+            }else {
+                console.log('Não foi possível obter resultados')
+            };
+        }
+        else {
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
+        }
+        html += footer;
+        html += '</body>\n</html>';
+        res.send(html);
+    });
 });
 
 // PAGINA PRODUTO LOJA
 servidor.get("/loja/produto", logging, function (req, res) {
+    if (req.session.carrinho) {
+        console.log(req.session.carrinho);
+    }
+
     // Tentar abrir ficheiro
     try {
-        var content = fs.readFileSync('html/produto.html', 'utf-8');
         var navbar = fs.readFileSync('html/NavBar Loja.html', 'utf-8')
-        var footer_loja = fs.readFileSync('html/Footer Loja.html', 'utf-8')
+        var footer = fs.readFileSync('html/Footer Loja.html', 'utf-8')
         var registo_login_popUp = fs.readFileSync('html/registo_login Loja.html', 'utf-8')
     }
     // Caso nao consiga da log do erro
@@ -778,7 +881,7 @@ servidor.get("/loja/produto", logging, function (req, res) {
     html += '<meta http-equiv="X-UA-Compatible" content="IE=edge">\n';
     html += '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
     //Title
-    html += '<title>Eventos | XTRA FOOD</title>\n';
+    html += '<title>Produto | XTRA FOOD</title>\n';
     html += '<link rel="stylesheet" href="/../css/fonts.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="/../css/navbar_css.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="/../css/footer_css.css" type="text/css">\n';
@@ -793,10 +896,10 @@ servidor.get("/loja/produto", logging, function (req, res) {
     //HTML NavBar
     html += navbar;
     if (req.session.idCliente){
-        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="/images/navbar icons/contaIcon.png" alt="icone conta"></a>';
          html += '</div></div></header>';
     }else{
-        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="/images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
         html += '</div></div></header>';
         html += registo_login_popUp;
     }
@@ -804,19 +907,176 @@ servidor.get("/loja/produto", logging, function (req, res) {
     if (req.session.login_) {
         html += '<script> session_abrir("login_popUp"); </script>';
     }
+    
+    var query ='';
+    query += 'SELECT idProduto, nome, descricao, detalhes, preco FROM produto WHERE idProduto = ' + req.query.id + ';';
+    query += 'SELECT idProduto_final, idCores, idTamanhos, stock, Cor, tamanho FROM produto_tamanhoecor INNER JOIN cores USING (idCores) INNER JOIN tamanhos USING (idTamanhos) WHERE idProduto = ' + req.query.id + ';';
+    console.log(query);
+    
+    pool.query(query, function (err, result, fields) {
+        if (!err) {
+            if (result && result.length > 0) {
+                //console.log(result[0]);
+                //console.log(result[1]);
 
-    //HTML Content
-    html += content;
+                dict_cores = {};
+                dict_tamanhos = {};
 
-    html += footer_loja;
+                for (const produto_final of result[1]) {
+                    if (dict_cores.hasOwnProperty(produto_final.idCores) == false) {
+                        dict_cores[produto_final.idCores] = produto_final.Cor;
+                    } else {
+                        //console.log(produto_final.idProduto_final + ' has ' + produto_final.Cor);
+                    };
+                    if (dict_tamanhos.hasOwnProperty(produto_final.idTamanhos) == false) {
+                        dict_tamanhos[produto_final.idTamanhos] = produto_final.tamanho;
+                    } else {
+                        //console.log(produto_final.idProduto_final + ' has ' + produto_final.tamanho);
+                    };
+                };
+                //console.log(dict_cores);
+                //console.log(dict_tamanhos);
+                html += '\n <script src="/../js/adicionar_produto_carrinho.js"></script>';
+                html += '\n <div class="flex flex_collum flex_center wrapper loja_gap">';
+                html += '\n    <div class="flex flex_center card_produto">';
+                html += '\n        <img class="produto_img" alt="imagem de produto - Ultrafood" src="/images/produtos/' + result[0][0].idProduto + '.jpg">';
+                html += '\n        <form id="form_produto" method="get" action="adicionar_carrinho" class="produto_info flex flex_collum space_between">';
+                html += '\n            <div class="title2">' + result[0][0].nome + '</div>';
+                html += '\n            <div class="text2_left">' + result[0][0].descricao + '</div>';
+                html += '\n             <div class="cores gap5">';
+                html += '\n                <div class="title4"> Cores </div>';
+                html += '\n                <div class="selecao_cores flex">';
 
-    //HTML close
-    html += '\n</body>\n</html>';
-    res.send(html);
+                // PREENCHIMENTO DE INPUTS PARA AS CORES DISPONÍVEIS
+                for (const cor in dict_cores) {
+                    var class_color = '';
+                    //console.log(cor, dict_cores[cor])
+                    if (cor == 1) {
+                        class_color = 'red';
+                    } else if (cor == 2) {
+                        class_color = 'yellow';
+                    } else if (cor == 3) {
+                        class_color = 'white';
+                    }
+                    html += '\n                    <input onclick="(() => cor_selecionada=' + cor + ')()" id="' + dict_cores[cor] + '" type="radio" name="cor" value=' + cor + '><label for="' + dict_cores[cor] + '"><span class="' + class_color + '"></span></label>';
+                };
+                html += '\n                </div>';
+                html += '\n            </div>';
+                html += '\n            <script>'; // script para habilitar a seleção de tamanhos segundo o stock
+                html += '\n                ';
+                html += '\n            </script>';
+                html += '\n            <div class="tamanhos flex gap5">';
+
+                // PREENCHIMENTO DE INPUTS PARA OS TAMANHOS DISPONÍVEIS
+                for (const tamanho in dict_tamanhos) {
+                    var class_color = '';
+                    //console.log(tamanho, dict_tamanhos[tamanho])
+                    html += '\n                <input onclick="(() => tamanho_selecionado=' + tamanho + ')()" type="radio" id="' + dict_tamanhos[tamanho] + '" name="tamanho" value=' + tamanho + '><label for="' + dict_tamanhos[tamanho] + '">' + dict_tamanhos[tamanho] + '</label>';
+                };
+                html += '\n            </div>';
+                html += '\n            <div class="preco flex">';
+                html += '\n                <div class="title4">Preço:</div>';
+                html += '\n                <div class="text2_left">' + result[0][0].preco + '€</div>';
+                html += '\n            </div>';
+                html += '\n            <div class="flex flex_collum gap5">';
+                html += '\n                <div class="disponibilidade flex">';
+                html += '\n                    <div class="disponibilidade_circle"></div>';
+                html += '\n                    <div  class="text2_left">Disponível Online</div>';
+                html += '\n                </div>';
+                html += '\n            </div>';
+                html += '\n            <div class="addicionar_carrinho pointer" onclick="adicionar_produto_carrinho(' + "'" + result[0][0].idProduto + "'" + ', cor_selecionada , tamanho_selecionado )">Adicionar ao carrinho</div>';
+                html += '\n        </form>';
+                html += '\n    </div>';
+                html += '\n    <div class="detalhes flex flex_collum flex_center">';
+                html += '\n        <div class="title2">DETALHES</div>';
+                html += '\n        <div class="separador"></div>';
+                html += '\n        <div class="detalhes_info flex flex_collum flex_center">';
+
+                // PREENCHIMENTO DE DETALHES DO PRODUTO
+                for (const detalhe in result[0][0].detalhes) {
+                    html += '\n            <p>' + result[0][0].detalhes[detalhe] + '</p>';
+                };
+                html += '\n        </div>';
+                html += '\n        <div class="separador"></div>';
+                html += '\n    </div>';
+                html += '\n</div>';
+
+                html += footer;
+                html += '</body>\n</html>';
+                return res.send(html);
+            } else {
+                console.log('Não foi possível obter resultados')
+                return res.status(500).redirect('/ProdutoNaoEncontrado');
+            };
+        } else {
+            console.log(err);
+            console.log('Erro ao executar pedido ao servidor');
+            return res.status(500).redirect('/InternalError');
+        };
+    });
+});
+
+// PROCESSAR ADIÇÃO AO CARRINHO
+servidor.get("/loja/adicionar_carrinho", logging, function (req, res) {
+    if (req.query) {
+        console.log(req.query);
+        
+        var query = '';
+        query += 'SELECT idProduto_final, idProduto, idCores, idTamanhos, stock, nome, preco, Cor, tamanho FROM produto_tamanhoecor INNER JOIN produto USING (idProduto) INNER JOIN cores USING (idCores) INNER JOIN tamanhos USING (idTamanhos) WHERE idProduto = ' + req.query.id + ' AND idCores = ' + req.query.cor + ' AND idTamanhos = ' + req.query.tamanho + ';';
+
+        pool.query(query, function (err, result, fields) {
+            if (!err) {
+                if (result && result.length > 0) {
+                    console.log(result[0].idProduto_final);
+                    if (!req.session.carrinho) {
+                        req.session.carrinho = new Object();
+                    }
+                    if (req.session.carrinho[result[0].idProduto_final]) {
+                        req.session.carrinho[result[0].idProduto_final] += 1;
+                    }
+                    else {
+                        req.session.carrinho[result[0].idProduto_final] = 1;
+                    }
+                    console.log("Adicionado com sucesso ao carrinho\n");
+                    return res.status(200).redirect('back');
+                } else {
+                console.log('Não foi possível obter resultados')
+                return res.status(500).redirect('/ProdutoNaoEncontrado');
+                };
+            } else {
+                console.log(err);
+                console.log('Erro ao executar pedido ao servidor');
+                return res.status(500).redirect('/InternalError');
+            };
+        });
+    } else {
+        console.log('Sem artigos selecionados');
+        return res.status(500).redirect('/InternalError');
+    };
+});
+
+// PROCESSAR REMOÇÃO DO CARRINHO
+servidor.get("/loja/remover_carrinho", logging, function (req, res) {
+    if (req.query) {
+        console.log(req.query);
+        if (req.session.carrinho[req.query.id] > 1) {
+            req.session.carrinho[req.query.id] -= 1;
+        }
+        else {
+            req.session.carrinho[req.query.id] = null;
+        }
+        console.log("Removido com sucesso do carrinho\n");
+        return res.status(200).redirect('/loja/carrinho');
+
+    } else {
+        console.log('Sem artigos para remover');
+        return res.status(500).redirect('/InternalError');
+    };
 });
 
 // CARRINHO
 servidor.get("/loja/carrinho", logging, function (req, res) {
+
     // Tentar abrir ficheiro
     try {
         var content = fs.readFileSync('html/carrinho_produtos.html', 'utf-8');
@@ -839,7 +1099,7 @@ servidor.get("/loja/carrinho", logging, function (req, res) {
     html += '<meta http-equiv="X-UA-Compatible" content="IE=edge">\n';
     html += '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
     //Title
-    html += '<title>Eventos | XTRA FOOD</title>\n';
+    html += '<title>Carrinho | XTRA FOOD</title>\n';
     html += '<link rel="stylesheet" href="/../css/fonts.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="/../css/navbar_css.css" type="text/css">\n';
     html += '<link rel="stylesheet" href="/../css/footer_css.css" type="text/css">\n';
@@ -858,7 +1118,7 @@ servidor.get("/loja/carrinho", logging, function (req, res) {
         html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
          html += '</div></div></header>';
     }else{
-        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="/images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
         html += '</div></div></header>';
         html += registo_login_popUp;
     }
@@ -870,11 +1130,155 @@ servidor.get("/loja/carrinho", logging, function (req, res) {
     //HTML Content
     html += content;
 
-    html += footer_loja;
+    if (req.session.carrinho) {
+        // filtrar apenas os álbuns que, no array carrinho, têm uma quantidade associada
+        var listaCarrinho = new Array();
+        Object.entries(req.session.carrinho).forEach(([key, value]) => {
+            console.log(key, value);
+            if (value != null){
+                listaCarrinho.push(parseInt(key));
+            };
+        });
+        
+        sql_string_where_clause = '(';
+        sql_string_where_clause += listaCarrinho.toString();
+        sql_string_where_clause += ')';
+        
+        
+        console.log(listaCarrinho, sql_string_where_clause);
+        if (sql_string_where_clause != '()'){
 
-    //HTML close
-    html += '\n</body>\n</html>';
-    res.send(html);
+            var query ='';
+            query += 'SELECT idProduto_final, idProduto, idCores, idTamanhos, stock, nome, preco, Cor, tamanho FROM produto_tamanhoecor INNER JOIN produto USING (idProduto) INNER JOIN cores USING (idCores) INNER JOIN tamanhos USING (idTamanhos) WHERE idProduto_final IN ' 
+            + sql_string_where_clause + ';';
+
+            var total_carrinho = 0;
+            
+            pool.query(query, function (err, result, fields) {
+                if (!err) {
+                    if (result && result.length > 0) {
+                        console.log(result)
+                        html += '<form method=get action="/loja/carrinho/informacao" class="flex flex_center flex_collum gap75 produtos">';
+                        html += '<div class="flex flex_center flex_collum gap25 listagem_produtos">';
+                        result.forEach(produto => {
+                            html += '\n            <div class="flex flex_center card_produto">';
+                            html += '\n                <img class="produto_img" alt="imagem de produto - Ultrafood" src="/images/produtos/' + produto.idProduto + '.jpg">';
+                            html += '\n                <div class="produto_info flex flex_center">';
+                            html += '\n                    <div class="flex flex_collum space_between info">';
+                            html += '\n                        <div class="title2 color_red">' + produto.nome + '</div>';
+                            html += '\n                        <div class="flex gap10">';
+                            if (produto.idCores == 1) {
+                                var class_color = 'red';
+                            } else if (produto.idCores == 2) {
+                                var class_color = 'yellow';
+                            } else if (produto.idCores == 3) {
+                                var class_color = 'white';
+                            }
+                            html += '\n                            <div class="title4"> Cor </div>';
+                            html += '\n                            <div class="cor_selecionada '+ class_color +'"></div>';
+                            html += '\n                        </div>';
+                            html += '\n                        <div class="flex gap10">';
+                            html += '\n                            <div class="title4"> Tamanho </div>';
+                            html += '\n                            <div class="tamanho_selecionado">' + produto.tamanho + '</div>';
+                            html += '\n                        </div>';
+                            html += '\n                        <div class="flex gap10">';
+                            html += '\n                            <div class="title4">Preço:</div>';
+                            html += '\n                            <div class="text2_left">' + produto.preco + ',00€</div>';
+                            html += '\n                        </div>';
+                            html += '\n                        <div class="flex gap10">';
+                            html += '\n                            <div class="title4">Quantidade:</div>';
+                            html += '\n                            <div class="text2_left">' + req.session.carrinho[produto.idProduto_final] + '</div>';
+                            html += '\n                        </div>';
+                            html += '\n                        <div class="flex flex_collum gap5">';
+                            if (produto.stock >= req.session.carrinho[produto.idProduto_final]) {
+                                html += '\n                            <div class="disponibilidade flex">';
+                                html += '\n                                <div class="disponibilidade_circle"></div>';
+                                html += '\n                                <div class="text2_left">Disponível Online</div>';
+                                html += '\n                            </div>';
+                            } else{
+                                html += '\n                            <div class="disponibilidade flex">';
+                                html += '\n                                <div class="indisponibilidade_circle"></div>';
+                                html += '\n                                <div class="text2_left">Indisponível Online</div>';
+                                html += '\n                            </div>';
+                            };
+                            html += '\n                        </div>';
+                            html += '\n                    </div>';
+                            html += '\n                    <img onclick="(() => window.location=' + "'" + '/loja/remover_carrinho?id=' + produto.idProduto_final + "'" + ')()" class="remover_produto pointer" src="/../images/icons/fechar.svg" alt="fechar">';
+                            html += '\n                </div>';
+                            html += '\n            </div>';
+                            total_carrinho += produto.preco * req.session.carrinho[produto.idProduto_final];
+                        });
+                        
+                        html += '</div>';
+                        
+                        html += '\n        <div class="flex card_produto">';
+                        html += '\n            <div class="flex gap10 doacao_card">';
+                        html += '\n                <div class="flex flex_collum gap10 doacao_info">';
+                        html += '\n                    <div class="title2 color_red">Doação opcional</div>';
+                        html += '\n                    <div class="text2_left">O donativo é uma ajuda direta a todas as associações envolvidas e o valor é totalmente de eleição própria.</div>';
+                        html += '\n                    <div class="flex gap10 escolha_doacao">';
+                        html += '\n                        <div class="title4">Quantidade </div>';
+                        html += '\n                        <input type="radio" id="option-zero" value=0 name="quantidade_donate" checked><label for="option-zero">0€</label>';
+                        html += '\n                        <input type="radio" id="option-one" value=1 name="quantidade_donate"><label for="option-one">1€</label>';
+                        html += '\n                        <input type="radio" id="option-two" value=5 name="quantidade_donate"><label for="option-two">5€</label>';
+                        html += '\n                        <input type="radio" id="option-three" value=10 name="quantidade_donate"><label for="option-three">10€</label>';
+                        html += '\n                        <input type="radio" id="option-for" value=25 name="quantidade_donate"><label for="option-for">25€</label>';
+                        html += '\n                    </div>';
+                        html += '\n                </div>';
+                        html += '\n            </div>';
+                        html += '\n        </div>';
+                        html += '\n        <div class="flex flex_collum preco_total">';
+                        html += '\n            <div class="separador"></div>';
+                        html += '\n            <div class="flex space_between total">';
+                        html += '\n                <div>TOTAL</div>';
+                        html += '\n                <div>' + total_carrinho + ',00€</div>';
+                        html += '\n            </div>';
+                        html += '\n        </div>';
+                        html += '\n        <div class="botoes flex flex_center space_between">';
+                        html += '\n            <a>';
+                        html += '\n                <div class="button4_grey button4_text_grey" onclick="javascript:history.back()">';
+                        html += '\n                    Voltar';
+                        html += '\n                </div>';
+                        html += '\n            </a>';
+                        //href="/loja/carrinho/informacao"
+                        html += '\n            <a>';
+                        html += '\n                <button type=submit class="button4_red button4_text_red">';
+                        html += '\n                    Continuar';
+                        html += '\n                </button>';
+                        html += '\n            </a>';
+                        html += '\n        </div>';
+                        
+                        html += '\n    </form>\n   </div>';
+                        html += footer_loja;
+                        html += '\n</body>\n</html>';
+                        return res.send(html);
+                    }else {
+                        console.log('Não foi possível obter resultados')
+                        return res.status(500).redirect('/ProdutoNaoEncontrado');
+                    };
+                } else {
+                    console.log(err);
+                    console.log('Erro ao executar pedido ao servidor');
+                    return res.status(500).redirect('/InternalError');
+                };
+            });
+        }else{
+            html += '<div class="text_left"> O seu carrinho encontra-se vazio</div>';
+            html += '<div class="text_left"> Visite a nossa loja e veja todos os produtos disponíveis.</div>';
+            html += '</div></div>';
+            html += footer_loja;
+            html += '\n</body>\n</html>';
+            return res.send(html);
+
+        };
+    } else {
+        html += '<div class="text_left"> O seu carrinho encontra-se vazio</div>';
+        html += '<div class="text_left"> Visite a nossa loja e veja todos os produtos disponíveis.</div>';
+        html += '</div></div>';
+        html += footer_loja;
+        html += '\n</body>\n</html>';
+        return res.send(html);
+    };
 });
 
 // CARRINHO

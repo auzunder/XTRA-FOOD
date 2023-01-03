@@ -576,6 +576,13 @@ rect {
     height: 15px;
 }
 
+.indisponibilidade_circle {
+    background-color: #AF1917;
+    border-radius: 100%;
+    width: 15px;
+    height: 15px;
+}
+
 .addicionar_carrinho{
     text-align: center;
     gap: 5px;
@@ -593,6 +600,10 @@ rect {
 
 .yellow {
     background-color: #FAD657;
+}
+
+.white {
+    background-color: rgb(220, 220, 220);
 }
 
 .color_red{
