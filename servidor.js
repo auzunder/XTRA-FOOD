@@ -199,7 +199,7 @@ servidor.get("/", logging, function (req, res) {
     html += home_content;
 
     var query ='';
-    query += 'SELECT idEvento, cartaz_img FROM evento ORDER BY data asc;';
+    query += 'SELECT idEvento, cartaz_img FROM evento WHERE data >= "' + new Date().toISOString() + '" ORDER BY data ASC;';
     query += 'SELECT idProduto, nome, preco FROM produto;';
 
     pool.query(query, function (err, result, fields) {
@@ -1884,10 +1884,10 @@ servidor.get("/user/history", logging, function (req, res) {
     //HTML NavBar
     html += navbar;
     if (req.session.idCliente){
-        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></a>';
+        html += '<a href="/user" id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption"> <img class="navBarIcons" src="/images/navbar icons/contaIcon.png" alt="icone conta"></a>';
          html += '</div></div></header>';
     }else{
-        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
+        html += '<div id="userAccount_navbar" class="flex flex_row flex_center navBarMenuOption pointer" onclick="session_abrir('+"'"+'login_popUp'+"'"+')"> <img class="navBarIcons" src="/images/navbar icons/contaIcon.png" alt="icone conta"></div>'; 
         html += '</div></div></header>';
         html += registo_login_popUp;
     }
