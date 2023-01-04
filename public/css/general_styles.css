@@ -589,6 +589,16 @@ rect {
     color: white;
 }
 
+.addicionar_carrinho_grey{
+    text-align: center;
+    gap: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #505050;
+    align-items: center;
+    color: white;
+}
+
 /* SELEÇÂO DE CORES */
 .red {
     background-color: #AF1917;

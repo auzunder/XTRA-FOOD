@@ -804,7 +804,7 @@ servidor.get("/loja", logging, function (req, res) {
     html += content;
 
     var query ='';
-    query += 'SELECT idProduto, nome, descricao, detalhes, categoria, preco FROM produto;';
+    query += 'SELECT idProduto, nome, descricao, detalhes, categoria, preco, MAX(stock) as max_stock FROM produto INNER JOIN produto_tamanhoecor USING (idProduto) GROUP BY idProduto;';
 
     pool.query(query, function (err, result, fields) {
         if (!err) {
@@ -824,14 +824,21 @@ servidor.get("/loja", logging, function (req, res) {
                     html += '\n                        <img class="item_loja_img" alt="imagem de produto - Tote Bag" src="/images/produtos/' + produto.idProduto + '.jpg">';
                     html += '\n                        <div class="item_loja flex flex_collum">';
                     html += '\n                            <h1 class="nome_item">' + produto.nome + '</h1>';
-                    html += '\n                            <div class="preco flex flex_center">';
-                    html += '\n                                <div class="preco_text">Preço:</div>';
-                    html += '\n                                <div class="preco_unitario">' + produto.preco + ',00€</div>';
-                    html += '\n                            </div>';
+                    if (produto.max_stock != 0) {
+                        html += '\n                            <div class="preco flex flex_center">';
+                        html += '\n                                <div class="preco_text">Preço:</div>';
+                        html += '\n                                <div class="preco_unitario">' + produto.preco + ',00€</div>';
+                        html += '\n                            </div>';
+                    };
                     html += '\n                            <a href="/loja/produto?id=' + produto.idProduto + '"><div class="addicionar_carrinho">Ver Produto</div></a>';
                     html += '\n                            <div class="disponibilidade flex flex_center">';
-                    html += '\n                                <div class="disponibilidade_circle"></div>';
-                    html += '\n                                <div class="disponibilidade_text">Disponível</div>';
+                    if (produto.max_stock == 0) {
+                        html += '\n                                <div class="disponibilidade_circle red"></div>';
+                        html += '\n                                <div class="disponibilidade_text">Indisponível</div>';
+                    } else {
+                        html += '\n                                <div class="disponibilidade_circle"></div>';
+                        html += '\n                                <div class="disponibilidade_text">Disponível</div>';
+                    }
                     html += '\n                            </div>';
                     html += '\n                        </div>';
                     html += '\n                    </div>';
@@ -915,6 +922,7 @@ servidor.get("/loja/produto", logging, function (req, res) {
     var query ='';
     query += 'SELECT idProduto, nome, descricao, detalhes, preco FROM produto WHERE idProduto = ' + req.query.id + ';';
     query += 'SELECT idProduto_final, idCores, idTamanhos, stock, Cor, tamanho FROM produto_tamanhoecor INNER JOIN cores USING (idCores) INNER JOIN tamanhos USING (idTamanhos) WHERE idProduto = ' + req.query.id + ';';
+    query += 'SELECT max(stock) as max_stock FROM produto_tamanhoecor INNER JOIN cores USING (idCores) INNER JOIN tamanhos USING (idTamanhos) WHERE idProduto = ' + req.query.id + ';';
     console.log(query);
     
     pool.query(query, function (err, result, fields) {
@@ -944,51 +952,67 @@ servidor.get("/loja/produto", logging, function (req, res) {
                 html += '\n <div class="flex flex_collum flex_center wrapper loja_gap">';
                 html += '\n    <div class="flex flex_center card_produto">';
                 html += '\n        <img class="produto_img" alt="imagem de produto - Ultrafood" src="/images/produtos/' + result[0][0].idProduto + '.jpg">';
-                html += '\n        <form id="form_produto" method="get" action="adicionar_carrinho" class="produto_info flex flex_collum space_between">';
+                html += '\n        <form id="form_produto" method="get" action="adicionar_carrinho" class="fill_available produto_info flex flex_collum space_between">';
                 html += '\n            <div class="title2">' + result[0][0].nome + '</div>';
                 html += '\n            <div class="text2_left">' + result[0][0].descricao + '</div>';
-                html += '\n             <div class="cores gap5">';
-                html += '\n                <div class="title4"> Cores </div>';
-                html += '\n                <div class="selecao_cores flex">';
+                console.log(result[2])
+                
+                if (result[2][0].max_stock != 0){
+                    html += '\n             <div class="cores gap5">';
+                    html += '\n                <div class="title4"> Cores </div>';
+                    html += '\n                <div class="selecao_cores flex">';
+        
+                    // PREENCHIMENTO DE INPUTS PARA AS CORES DISPONÍVEIS
+                    for (const cor in dict_cores) {
+                        var class_color = '';
+                        //console.log(cor, dict_cores[cor])
+                        if (cor == 1) {
+                            class_color = 'red';
+                        } else if (cor == 2) {
+                            class_color = 'yellow';
+                        } else if (cor == 3) {
+                            class_color = 'white';
+                        }
+                        html += '\n                    <input onclick="(() => cor_selecionada=' + cor + ')()" id="' + dict_cores[cor] + '" type="radio" name="cor" value=' + cor + '><label for="' + dict_cores[cor] + '"><span class="' + class_color + '"></span></label>';
+                    };
+                    html += '\n                </div>';
+                    html += '\n            </div>';
+                    html += '\n            <div class="tamanhos flex gap5">';
+    
+                    // PREENCHIMENTO DE INPUTS PARA OS TAMANHOS DISPONÍVEIS
+                    for (const tamanho in dict_tamanhos) {
+                        var class_color = '';
+                        //console.log(tamanho, dict_tamanhos[tamanho])
+                        html += '\n                <input onclick="(() => tamanho_selecionado=' + tamanho + ')()" type="radio" id="' + dict_tamanhos[tamanho] + '" name="tamanho" value=' + tamanho + '><label for="' + dict_tamanhos[tamanho] + '">' + dict_tamanhos[tamanho] + '</label>';
+                    };
+                    html += '\n            </div>';
+                    html += '\n            <div class="preco flex">';
+                    html += '\n                <div class="title4">Preço:</div>';
+                    html += '\n                <div class="text2_left">' + result[0][0].preco + '€</div>';
+                    html += '\n            </div>';
 
-                // PREENCHIMENTO DE INPUTS PARA AS CORES DISPONÍVEIS
-                for (const cor in dict_cores) {
-                    var class_color = '';
-                    //console.log(cor, dict_cores[cor])
-                    if (cor == 1) {
-                        class_color = 'red';
-                    } else if (cor == 2) {
-                        class_color = 'yellow';
-                    } else if (cor == 3) {
-                        class_color = 'white';
-                    }
-                    html += '\n                    <input onclick="(() => cor_selecionada=' + cor + ')()" id="' + dict_cores[cor] + '" type="radio" name="cor" value=' + cor + '><label for="' + dict_cores[cor] + '"><span class="' + class_color + '"></span></label>';
-                };
-                html += '\n                </div>';
-                html += '\n            </div>';
-                html += '\n            <script>'; // script para habilitar a seleção de tamanhos segundo o stock
-                html += '\n                ';
-                html += '\n            </script>';
-                html += '\n            <div class="tamanhos flex gap5">';
+                    html += '\n            <div class="flex flex_collum gap5">';
+                    html += '\n                <div class="disponibilidade flex">';
+                    html += '\n                    <div class="disponibilidade_circle"></div>';
+                    html += '\n                    <div  class="text2_left">Disponível Online</div>';
+                    html += '\n                </div>';
+                    html += '\n            </div>';
+                    html += '\n            <div class="addicionar_carrinho pointer" onclick="adicionar_produto_carrinho(' + "'" + result[0][0].idProduto + "'" + ', cor_selecionada , tamanho_selecionado )">Adicionar ao carrinho</div>';
+                }else{
+                    html += '\n            <div class="preco flex">';
+                    html += '\n                <div class="title4">Preço:</div>';
+                    html += '\n                <div class="text2_left"></div>';
+                    html += '\n            </div>';
 
-                // PREENCHIMENTO DE INPUTS PARA OS TAMANHOS DISPONÍVEIS
-                for (const tamanho in dict_tamanhos) {
-                    var class_color = '';
-                    //console.log(tamanho, dict_tamanhos[tamanho])
-                    html += '\n                <input onclick="(() => tamanho_selecionado=' + tamanho + ')()" type="radio" id="' + dict_tamanhos[tamanho] + '" name="tamanho" value=' + tamanho + '><label for="' + dict_tamanhos[tamanho] + '">' + dict_tamanhos[tamanho] + '</label>';
+                    html += '\n            <div class="flex flex_collum gap5">';
+                    html += '\n                <div class="disponibilidade flex">';
+                    html += '\n                    <div class="disponibilidade_circle red"></div>';
+                    html += '\n                    <div  class="text2_left">Indisponível Online</div>';
+                    html += '\n                </div>';
+                    html += '\n            </div>';
+                    html += '\n            <div class="addicionar_carrinho_grey">Adicionar ao carrinho</div>';
                 };
-                html += '\n            </div>';
-                html += '\n            <div class="preco flex">';
-                html += '\n                <div class="title4">Preço:</div>';
-                html += '\n                <div class="text2_left">' + result[0][0].preco + '€</div>';
-                html += '\n            </div>';
-                html += '\n            <div class="flex flex_collum gap5">';
-                html += '\n                <div class="disponibilidade flex">';
-                html += '\n                    <div class="disponibilidade_circle"></div>';
-                html += '\n                    <div  class="text2_left">Disponível Online</div>';
-                html += '\n                </div>';
-                html += '\n            </div>';
-                html += '\n            <div class="addicionar_carrinho pointer" onclick="adicionar_produto_carrinho(' + "'" + result[0][0].idProduto + "'" + ', cor_selecionada , tamanho_selecionado )">Adicionar ao carrinho</div>';
+
                 html += '\n        </form>';
                 html += '\n    </div>';
                 html += '\n    <div class="detalhes flex flex_collum flex_center">';
