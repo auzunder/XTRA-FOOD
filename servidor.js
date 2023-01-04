@@ -1778,6 +1778,7 @@ servidor.get("/loja/carrinho/finalizacao/submissao_produtos", logging, function 
         pool.query(query, function (err, result, fields) {
             if (!err) {
                 console.log('Nova encomenda_produto!');
+                req.session.carrinho = new Object();
                 return res.status(200).redirect('/obrigado?motivo=encomenda')
             } else {
                 console.log(err);
