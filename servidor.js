@@ -918,22 +918,23 @@ servidor.get("/loja/produto", logging, function (req, res) {
     if (req.session.login_) {
         html += '<script> session_abrir("login_popUp"); </script>';
     }
-    
-    var query ='';
-    query += 'SELECT idProduto, nome, descricao, detalhes, preco FROM produto WHERE idProduto = ' + req.query.id + ';';
-    query += 'SELECT idProduto_final, idCores, idTamanhos, stock, Cor, tamanho FROM produto_tamanhoecor INNER JOIN cores USING (idCores) INNER JOIN tamanhos USING (idTamanhos) WHERE idProduto = ' + req.query.id + ';';
-    query += 'SELECT max(stock) as max_stock FROM produto_tamanhoecor INNER JOIN cores USING (idCores) INNER JOIN tamanhos USING (idTamanhos) WHERE idProduto = ' + req.query.id + ';';
-    console.log(query);
-    
-    pool.query(query, function (err, result, fields) {
-        if (!err) {
-            if (result && result.length > 0) {
-                //console.log(result[0]);
-                //console.log(result[1]);
 
-                dict_cores = {};
-                dict_tamanhos = {};
-
+    if (req.query.id) {
+        var query ='';
+        query += 'SELECT idProduto, nome, descricao, detalhes, preco FROM produto WHERE idProduto = ' + req.query.id + ';';
+        query += 'SELECT idProduto_final, idCores, idTamanhos, stock, Cor, tamanho FROM produto_tamanhoecor INNER JOIN cores USING (idCores) INNER JOIN tamanhos USING (idTamanhos) WHERE idProduto = ' + req.query.id + ';';
+        query += 'SELECT max(stock) as max_stock FROM produto_tamanhoecor INNER JOIN cores USING (idCores) INNER JOIN tamanhos USING (idTamanhos) WHERE idProduto = ' + req.query.id + ';';
+        console.log(query);
+        
+        pool.query(query, function (err, result, fields) {
+            if (!err) {
+                if (result && result.length > 0) {
+                    //console.log(result[0]);
+                    //console.log(result[1]);
+                    
+                    dict_cores = {};
+                    dict_tamanhos = {};
+                    
                 for (const produto_final of result[1]) {
                     if (dict_cores.hasOwnProperty(produto_final.idCores) == false) {
                         dict_cores[produto_final.idCores] = produto_final.Cor;
@@ -961,7 +962,7 @@ servidor.get("/loja/produto", logging, function (req, res) {
                     html += '\n             <div class="cores gap5">';
                     html += '\n                <div class="title4"> Cores </div>';
                     html += '\n                <div class="selecao_cores flex">';
-        
+                    
                     // PREENCHIMENTO DE INPUTS PARA AS CORES DISPONÍVEIS
                     for (const cor in dict_cores) {
                         var class_color = '';
@@ -978,7 +979,7 @@ servidor.get("/loja/produto", logging, function (req, res) {
                     html += '\n                </div>';
                     html += '\n            </div>';
                     html += '\n            <div class="tamanhos flex gap5">';
-    
+                    
                     // PREENCHIMENTO DE INPUTS PARA OS TAMANHOS DISPONÍVEIS
                     for (const tamanho in dict_tamanhos) {
                         var class_color = '';
@@ -990,7 +991,7 @@ servidor.get("/loja/produto", logging, function (req, res) {
                     html += '\n                <div class="title4">Preço:</div>';
                     html += '\n                <div class="text2_left">' + result[0][0].preco + '€</div>';
                     html += '\n            </div>';
-
+                    
                     html += '\n            <div class="flex flex_collum gap5">';
                     html += '\n                <div class="disponibilidade flex">';
                     html += '\n                    <div class="disponibilidade_circle"></div>';
@@ -1003,7 +1004,7 @@ servidor.get("/loja/produto", logging, function (req, res) {
                     html += '\n                <div class="title4">Preço:</div>';
                     html += '\n                <div class="text2_left"></div>';
                     html += '\n            </div>';
-
+                    
                     html += '\n            <div class="flex flex_collum gap5">';
                     html += '\n                <div class="disponibilidade flex">';
                     html += '\n                    <div class="disponibilidade_circle red"></div>';
@@ -1012,14 +1013,14 @@ servidor.get("/loja/produto", logging, function (req, res) {
                     html += '\n            </div>';
                     html += '\n            <div class="addicionar_carrinho_grey">Adicionar ao carrinho</div>';
                 };
-
+                
                 html += '\n        </form>';
                 html += '\n    </div>';
                 html += '\n    <div class="detalhes flex flex_collum flex_center">';
                 html += '\n        <div class="title2">DETALHES</div>';
                 html += '\n        <div class="separador"></div>';
                 html += '\n        <div class="detalhes_info flex flex_collum flex_center">';
-
+                
                 // PREENCHIMENTO DE DETALHES DO PRODUTO
                 for (const detalhe in result[0][0].detalhes) {
                     html += '\n            <p>' + result[0][0].detalhes[detalhe] + '</p>';
@@ -1028,7 +1029,7 @@ servidor.get("/loja/produto", logging, function (req, res) {
                 html += '\n        <div class="separador"></div>';
                 html += '\n    </div>';
                 html += '\n</div>';
-
+                
                 html += footer;
                 html += '</body>\n</html>';
                 return res.send(html);
@@ -1041,7 +1042,11 @@ servidor.get("/loja/produto", logging, function (req, res) {
             console.log('Erro ao executar pedido ao servidor');
             return res.status(500).redirect('/InternalError');
         };
-    });
+        });
+    } else {
+        console.log('Produto Nao Indicado')
+        return res.status(404).redirect('/ProdutoNaoIndicado');
+    }
 });
 
 // PROCESSAR ADIÇÃO AO CARRINHO
